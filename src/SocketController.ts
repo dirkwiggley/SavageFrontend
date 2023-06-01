@@ -1,51 +1,76 @@
+import socketIO, { Socket, io } from "socket.io-client";
 import { UserInterface } from "./types.js"
+import { DefaultEventsMap } from "@socket.io/component-emitter";
 
 class SocketController {
-    static socket: WebSocket | null = null;
+    // static socket: WebSocket | null = null;
+    static socket: Socket<DefaultEventsMap, DefaultEventsMap>;
     static socketId: number | null = null;
+    auth: UserInterface;
 
-    createWebSocket = (auth: UserInterface) => {
-        const port = 8081;
+    constructor(auth: UserInterface) {
+        this.auth = auth;
+    }
+
+    createWebSocket = () => {
+        SocketController.socket = SocketController.socket;
+        SocketController.socket = io("http://10.0.0.154:8082", {
+            withCredentials: true,
+            autoConnect: false, 
+            reconnection: false,
+            query: {
+                data: this.auth
+            },
+            reconnectionDelayMax: 10000,
+        });
+        SocketController.socket.connect();
+        SocketController.socket.emit("USER_INFO", this.auth);
+
+        SocketController.socket.on("USER_INFO", (data) => {
+            console.log(data, 2, null);
+        });
+
+        // const port = 8081;
         
-        if (!SocketController.socket) {
-            const ws = new WebSocket(`ws://10.0.0.154:${port}`);
-            SocketController.socket = ws;
-            if (SocketController.socket === null) {
-                console.error("Could not create a WebSocket");
-                return;
-            } else {
-                SocketController.socket = ws;
-                ws.onopen = (event) => {
-                    const openRequest = {"request":"OPEN", "data":auth};
-                    SocketController.socket?.send(JSON.stringify(openRequest));
-                }
-            }
+        // if (!SocketController.socket) {
+        //     const ws = new WebSocket(`ws://10.0.0.154:${port}`);
+        //     SocketController.socket = ws;
+        //     if (SocketController.socket === null) {
+        //         console.error("Could not create a WebSocket");
+        //         return;
+        //     } else {
+        //         SocketController.socket = ws;
+        //         ws.onopen = (event) => {
+        //             const openRequest = {"request":"OPEN", "data":auth};
+        //             SocketController.socket?.send(JSON.stringify(openRequest));
+        //         }
+        //     }
         
-            ws.onmessage = (event) => {
-                const data = JSON.parse(event.data);
-                if (data.response === "OPEN") {
-                    SocketController.socketId = data.id;
-                } else if (data.response === "CREATE_COMBAT_TRACKER") { 
-                    console.log("CREATE_COMBAT_TRACKER");
-                } else if (data.response === "GET_COMBAT_TRACKERS") {
-                    console.log("GET_COMBAT_TRACKERS");
-                } else if (data.response === "JOIN_COMBAT_TRACKER") {
-                    console.log("JOIN_COMBAT_TRACKER");
-                } else if (data.response === "REMOVE_USER_FROM_TRACKER") {
-                    console.log("REMOVE_USER_FROM_TRACKER");
-                } else if (data.response === "GET_TRACKER_USERS") {
-                    console.log("GET_TRACKER_USERS");
-                } else if (data.response === "DELETE_TRACKER") {
-                    console.log("DELETE_TRACKER");
-                } else if (data.response === "SEND_MESSAGE") {
-                    console.log("SEND_MESSAGE");
-                } else {
-                    console.log("UNKNOWN RESPONSE");
-                }
+        //     ws.onmessage = (event) => {
+        //         const data = JSON.parse(event.data);
+        //         if (data.response === "OPEN") {
+        //             SocketController.socketId = data.id;
+        //         } else if (data.response === "CREATE_COMBAT_TRACKER") { 
+        //             console.log("CREATE_COMBAT_TRACKER");
+        //         } else if (data.response === "GET_COMBAT_TRACKERS") {
+        //             console.log("GET_COMBAT_TRACKERS");
+        //         } else if (data.response === "JOIN_COMBAT_TRACKER") {
+        //             console.log("JOIN_COMBAT_TRACKER");
+        //         } else if (data.response === "REMOVE_USER_FROM_TRACKER") {
+        //             console.log("REMOVE_USER_FROM_TRACKER");
+        //         } else if (data.response === "GET_TRACKER_USERS") {
+        //             console.log("GET_TRACKER_USERS");
+        //         } else if (data.response === "DELETE_TRACKER") {
+        //             console.log("DELETE_TRACKER");
+        //         } else if (data.response === "SEND_MESSAGE") {
+        //             console.log("SEND_MESSAGE");
+        //         } else {
+        //             console.log("UNKNOWN RESPONSE");
+        //         }
                 
-                console.log(JSON.stringify(data, null, 2));
-            }
-        }
+        //         console.log(JSON.stringify(data, null, 2));
+        //     }
+        // }
     }
     
     createTracker = (data: any) => {

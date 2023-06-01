@@ -39,28 +39,28 @@ const CombatTracker = () => {
 
   }
 
-  const getSocketController = () : SocketController => {
+  const getSocketController = (auth: UserInterface) : SocketController => {
     let sc: SocketController | null = socketController;
     if (!sc) {
-      sc = new SocketController();
+      sc = new SocketController(auth);
       setSocketController(sc);
     }
     return sc;
   }
 
   const handleCreateWebSocket = () => {
-    const sc = getSocketController();
-    sc.createWebSocket(auth as UserInterface);
+    const sc = getSocketController(auth as UserInterface);
+    sc.createWebSocket();
   }
 
   const handleCreateTracker = () => {
-    const sc = getSocketController();
+    const sc = getSocketController(auth as UserInterface);
     const data = { name: "First Tracker", gamemaster_id: auth?.id, gamemaster_name: auth?.nickname };
     sc.createTracker(data);
   }
 
   const handleJoinTracker = () => {
-    const sc = getSocketController();
+    const sc = getSocketController(auth as UserInterface);
     const GET_A_REAL_TRACKER_ID = 1;
     setCurrentTrackerId(GET_A_REAL_TRACKER_ID);
     const authId = (auth && auth.id) ? auth.id : 0;
@@ -70,19 +70,19 @@ const CombatTracker = () => {
 
   const handleRemoveUserFromTracker = () => {
     if (currentTrackerId !== NO_TRACKER_SELECTED) {
-      const sc = getSocketController();
+      const sc = getSocketController(auth as UserInterface);
       const authId = (auth && auth.id) ? auth.id : 0;
       sc.removeUserFromTracker(currentTrackerId, authId);
     }
   }
 
   const handleGetTrackers = () => {
-    const sc = getSocketController();
+    const sc = getSocketController(auth as UserInterface);
     sc.getTrackers();
   }
 
   const handleGetTrackerUsers = () => {
-    const sc = getSocketController();
+    const sc = getSocketController(auth as UserInterface);
     sc.getTrackerUsers(1);
   }
 
