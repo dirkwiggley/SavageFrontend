@@ -592,6 +592,7 @@ export default function CustomPaginationActionsTable() {
                   <TableFooter>
                     <TableRow>
                       <TablePagination
+                        sx={{ width: "100%" }}
                         rowsPerPageOptions={[
                           5,
                           10,
@@ -728,6 +729,7 @@ export default function CustomPaginationActionsTable() {
                   <TableFooter>
                     <TableRow>
                       <TablePagination
+                        sx={{ width: "100%" }}
                         rowsPerPageOptions={[
                           5,
                           10,

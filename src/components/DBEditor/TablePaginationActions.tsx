@@ -10,6 +10,7 @@ import * as locales from '@mui/material/locale';
 import { useTranslation } from "react-i18next";
 import { useAuthContext } from "../AuthStore";
 import { getCodeFromPrefix } from "../Locales";
+import zIndex from "@mui/material/styles/zIndex";
 
 export interface TPActionsProps {
     count: number,
@@ -30,11 +31,6 @@ export function TablePaginationActions(props: TPActionsProps) {
 
     const theme = useTheme();
 
-    // useEffect(() => {
-    //     const locale = auth ? auth.locale : "enUS";
-    //     setLocale(locale as SupportedLocales);
-    // }, [auth?.locale]);
-
     useEffect(() => {
         const language = i18n.language;
         const resolved = i18n.resolvedLanguage;
@@ -47,7 +43,7 @@ export function TablePaginationActions(props: TPActionsProps) {
             let lang: locales.Localization = auth?.locale as locales.Localization;
             if (!lang) lang = locales[locale];
             const out = locales[locale];
-            return createTheme(theme, lang)
+            return createTheme(theme, lang);
             // return createTheme(theme, locales[locale!])
         },
         [locale, theme],
@@ -69,19 +65,23 @@ export function TablePaginationActions(props: TPActionsProps) {
         onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
     };
 
+    const pageMaxItemNo = (page + 1 * rowsPerPage);
+    const onLastPage = pageMaxItemNo >= count;
+    const onFirstPage = page === 0;
+
     return (
         <ThemeProvider theme={themeWithLocale}>
             <Box sx={{ flexShrink: 0, ml: 2.5 }}>
                 <IconButton
                     onClick={handleFirstPageButtonClick}
-                    disabled={page === 0}
+                    disabled={onFirstPage}
                     aria-label="first page"
                 >
                     {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
                 </IconButton>
                 <IconButton
                     onClick={handleBackButtonClick}
-                    disabled={page === 0}
+                    disabled={onFirstPage}
                     aria-label="previous page"
                 >
                     {theme.direction === "rtl" ? (
@@ -92,8 +92,9 @@ export function TablePaginationActions(props: TPActionsProps) {
                 </IconButton>
                 <IconButton
                     onClick={handleNextButtonClick}
-                    disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+                    disabled={onLastPage}
                     aria-label="next page"
+                    sx = {{zIndex: 1000}}
                 >
                     {theme.direction === "rtl" ? (
                         <KeyboardArrowLeft />
