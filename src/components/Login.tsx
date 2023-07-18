@@ -1,8 +1,7 @@
 import { useRef, useState, useEffect, ChangeEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { styled } from '@mui/system';
-import { Grid, Paper, Typography, TextField, Button, Link as Muilink } from "@mui/material";
-
+import { Grid, Paper, Typography, TextField, Button, Link as Muilink, Box } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 import API from '../api';
@@ -15,6 +14,7 @@ const StyledGrid = styled(Grid, {
 })({
   justifyContent: "center",
   minHeight: "90vh",
+  maxWidth: "100vw",
 });
 
 const StyledPaper = styled(Paper, {
@@ -24,6 +24,9 @@ const StyledPaper = styled(Paper, {
   justifyContent: "center",
   minHeight: "22vh",
   padding: "50px",
+  borderRadius: "20px",
+  background: "rgba(255,255,255,1.0)",//"transparent",
+  backdropFilter: "blur(15px)",
 });
 
 const ErrMsgTypography = styled(Typography, {
@@ -67,10 +70,15 @@ function Login() {
     setErrMsg('');
   }, [login, password]);
 
+  const clickEvent = (event: { stopPropagation: () => void; }) => {
+    event.stopPropagation();
+  }
+
   const changeLogin = (event: ChangeEvent<HTMLInputElement>) => {
     setLogin(event.target.value);
     setErrMsg("");
   }
+
 
   const changePassword = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
@@ -120,10 +128,13 @@ function Login() {
 
   const out = show ?
   (
-    <Grid container spacing={0} justifyContent="center" direction="row">
+    <Grid container spacing={0} justifyContent="center" direction="row" >
       <Grid item >
         <StyledGrid container direction="column" justifyContent="center" spacing={2} >
-          <StyledPaper variant="elevation" elevation={2} sx={{ bgcolor: "background.lightestBlue", mb: 0 }}>
+          <Grid item >
+            <Box style={{width:"20%", height:"20%", backgroundImage: "../assets/background2.jpg" }} />
+          </Grid>
+          <StyledPaper variant="elevation" elevation={2} >
             <Grid item>
               {errMsg === "" ? <OffscreenTypography ref={errRef} aria-live="assertive" /> : <ErrMsgTypography ref={errRef} aria-live="assertive" >{errMsg}</ErrMsgTypography>}
             </Grid>
@@ -136,14 +147,13 @@ function Login() {
                   <Grid item>
                     <TextField
                       id="login"
-                      // ref={userRef}
                       type="login"
                       placeholder={t('login.login') as string}
                       variant="outlined"
                       value={login}
+                      onClick={clickEvent}
                       onChange={changeLogin}
                       required
-                      // />
                       autoFocus={true} />
                   </Grid>
                   <Grid item>
@@ -153,6 +163,7 @@ function Login() {
                       placeholder={t('login.password') as string}
                       variant="outlined"
                       value={password}
+                      onClick={clickEvent}
                       onChange={changePassword}
                       required />
                   </Grid>
@@ -172,7 +183,8 @@ function Login() {
           </StyledPaper >
         </StyledGrid >
       </Grid >
-    </Grid > ) :
+    </Grid >
+   ) :
     null;
 
   return out

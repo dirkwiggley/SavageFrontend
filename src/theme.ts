@@ -10,28 +10,21 @@ export const theme = createTheme({
       main: "#3BACB6",
       light: "#82DBD8"
     },
-    // otherColor: {
-    //   main: "#82DBD8",
-    //   light: "#B3E8E5"
-    // },
-    // background: {
-    //   medium: "#3BACB6",
-    //   light: "#82DBD8",
-    //   darkestBlue: "#2155CD",
-    //   darkerBlue: "#0AA1DD",
-    //   lightBlue: "#79DAE8",
-    //   lightestBlue: "#E8F9FD",
-    //   white: "#FFFFFF",
-    //   lightGray: "#EEEEEE",
-    // },
-  }
+  },
+  typography: {
+    fontFamily: [
+      'DM Serif Text',
+      'serif',
+    ].join(','),
+  },
 });
 
 export const otherColors = {
     // background: {
     //   medium: "#3BACB6",
     //   light: "#82DBD8",
-      darkestBlue: "#2155CD",
+      // darkestBlue: "#2155CD",
+      darkestBlue: "#D2B48C",
     //   darkerBlue: "#0AA1DD",
     //   lightBlue: "#79DAE8",
     //   lightestBlue: "#E8F9FD",

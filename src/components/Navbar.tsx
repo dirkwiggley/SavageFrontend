@@ -17,24 +17,8 @@ import { useTranslation, Trans } from "react-i18next";
 import { useAuthContext } from "./AuthStore";
 import API from "../api";
 
-import { otherColors } from "../theme";
-
-const MobileBox = styled(Box)(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  [theme.breakpoints.up("sm")]: {
-    display: "none",
-  },
-}));
-
-const NonMobileBox = styled(Box)(({ theme }) => ({
-  display: "flex",
-  flex: 1,
-  alignItems: "center",
-  [theme.breakpoints.down("sm")]: {
-    display: "none",
-  },
-}));
+import { otherColors, theme } from "../theme";
+import { MobileBox, NonMobileBox } from "./MobileBox";
 
 export default function MenuAppBar() {
   const { t, i18n } = useTranslation();
@@ -116,17 +100,17 @@ export default function MenuAppBar() {
     navigate("/users");
   };
 
-  const handleCombatTracker = (event: React.SyntheticEvent) => {
-    event.stopPropagation();
-    handleClose();
-    navigate("/combattracker");
-  };
-
   const handleSetLang = (event: React.SyntheticEvent) => {
     event.stopPropagation();
     handleClose();
     navigate("/locales");
   }
+
+  const handleCombatTracker = (event: React.SyntheticEvent) => {
+    event.stopPropagation();
+    handleClose();
+    navigate("/combattracker");
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -174,58 +158,84 @@ export default function MenuAppBar() {
               </Menu>
             </Box>
           </MobileBox>
-          <Typography variant="h6" component="span" sx={{ mr: 2 }}>
+          <Typography variant="h6" component="span" sx={{ mr: 2, fontWeight: "bold" }}>
             App
           </Typography>
           <NonMobileBox>
             <MaterialLink
               component={RouterLink}
               to="/home"
-              sx={{ flexGrow: 1, ml: 1, mr: 1, color: "#FFFFFF" }}
+              sx={{ 
+                flexGrow: 1, 
+                ml: 1, 
+                mr: 1, 
+                color: "#FFFFFF",
+                fontWeight: "bold",
+                // textShadow: '2px 2px 10px rgba(0, 0, 0, 1.0), -2px -2px 1px rgba(0, 0, 0, 1.0)' 
+              }}
             >
-              {t('navbar.home')}
+              <Typography variant="h6" component="span" sx={{ mr: 2 }}>{t('navbar.home')}</Typography>
             </MaterialLink>
             <MaterialLink
               component={RouterLink}
               to="/about"
-              sx={{ flexGrow: 1, ml: 1, mr: 1, color: "#FFFFFF" }}
+              sx={{ 
+                flexGrow: 1, 
+                ml: 1, 
+                mr: 1, 
+                color: "#FFFFFF",
+                fontWeight: "bold",
+                // textShadow: '2px 2px 10px rgba(0, 0, 0, 1.0), -2px -2px 1px rgba(0, 0, 0, 1.0)' 
+              }}
             >
-              {t('navbar.about')}
+              <Typography variant="h6" component="span" sx={{ mr: 2 }}>{t('navbar.about')}</Typography>
             </MaterialLink>
-            {roles && roles.length > 0 ? (
-              <MaterialLink
-                component={RouterLink}
-                to="/combattracker"
-                sx={{ flexGrow: 1, ml: 1, mr: 1, color: "#FFFFFF" }}
-              >
-                Combat Tracker
-            </MaterialLink>
-            ) : null}
             {isAdmin ? (
               <MaterialLink
                 component={RouterLink}
                 to="/users"
-                sx={{ flexGrow: 1, ml: 1, mr: 1, color: "#FFFFFF" }}
+                sx={{ 
+                  flexGrow: 1, 
+                  ml: 1, 
+                  mr: 1, 
+                  color: "#FFFFFF",
+                  fontWeight: "bold",
+                  // textShadow: '2px 2px 10px rgba(0, 0, 0, 1.0), -2px -2px 1px rgba(0, 0, 0, 1.0)' 
+                }}
               >
-                {t('navbar.users')}
+                <Typography variant="h6" component="span" sx={{ mr: 2 }}>{t('navbar.users')}</Typography>
               </MaterialLink>
             ) : null}
             {isAdmin ? (
               <MaterialLink
                 component={RouterLink}
                 to="/dbeditor"
-                sx={{ flexGrow: 1, ml: 1, mr: 1, color: "#FFFFFF" }}
+                sx={{ 
+                  flexGrow: 1, 
+                  ml: 1, 
+                  mr: 1, 
+                  color: "#FFFFFF",
+                  fontWeight: "bold",
+                  // textShadow: '2px 2px 10px rgba(0, 0, 0, 1.0), -2px -2px 1px rgba(0, 0, 0, 1.0)' 
+                }}
               >
-                {t('navbar.dbeditor')}
+                <Typography variant="h6" component="span" sx={{ mr: 2 }}>{t('navbar.dbeditor')}</Typography>
               </MaterialLink>
             ) : null}
             {roles && roles.length > 0 ? (
               <MaterialLink
                 component={RouterLink}
                 to="/profile"
-                sx={{ flexGrow: 1, ml: 1, mr: 1, color: "#FFFFFF" }}
+                sx={{ 
+                  flexGrow: 1, 
+                  ml: 1, 
+                  mr: 1, 
+                  color: "#FFFFFF",
+                  fontWeight: "bold",
+                  // textShadow: '2px 2px 10px rgba(0, 0, 0, 1.0), -2px -2px 1px rgba(0, 0, 0, 1.0)' 
+                }}
               >
-                {t('navbar.profile')}
+                <Typography variant="h6" component="span" sx={{ mr: 2 }}>{t('navbar.profile')}</Typography>
               </MaterialLink>
             ) : null}
           </NonMobileBox>
@@ -272,3 +282,6 @@ export default function MenuAppBar() {
     </Box>
   );
 }
+
+
+

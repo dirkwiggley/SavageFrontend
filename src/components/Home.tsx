@@ -9,8 +9,10 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 
 import { useTranslation, Trans } from "react-i18next";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, MouseEvent } from "react";
 import { useAuthContext } from "./AuthStore";
+import Grid from "@mui/material/Grid";
+import { bgcolor } from "@mui/system";
 
 const lngs: any = {
   en: { nativeName: 'English' },
@@ -40,8 +42,9 @@ function Home() {
     }
   }, [auth, setRoles, setIsAdmin]);
 
-  const handleClick = () => {
+  const handleClick = (event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     setShowiFrame(!showiFrame);
+    event.stopPropagation();
   };
 
   const showVideo = () => {
@@ -70,19 +73,21 @@ function Home() {
   }
 
   return (
-    <Box pt={3} overflow="hidden">
-      <Grid2 container spacing={2}>
-        <Grid2 xs={12}>
+    <Box overflow="hidden" sx={{ minHeight: "91vh" }}>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
           <Box
             style={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              minHeight: "85vh",
+              maxWidth: "100vw",
             }}
           >
-            <Card sx={{ maxWidth: 345 }}>
+            <Card sx={{ maxWidth: 345, bgcolor: "rgba(255,255,255,0.5)" }}>
               {showVideo()}
-              <CardContent>
+              <CardContent sx={{ bgcolor: "rgba(255,255,255,0.5)" }}>
                 <Typography gutterBottom variant="h5" component="div">
                   {t('home.head')}
                 </Typography>
@@ -92,29 +97,14 @@ function Home() {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button onClick={handleClick} size="small">
+                <Button onClick={(e) => handleClick(e)} size="small">
                   {t('home.action')}
                 </Button>
               </CardActions>
             </Card>
           </Box>
-        </Grid2>
-        {/* <Grid2 xs={12}>
-          <Box
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            {Object.keys(lngs).map((lng) => (
-              <button key={lng} style={{ fontWeight: i18n.resolvedLanguage === lng ? 'bold' : 'normal' }} type="submit" onClick={() => i18n.changeLanguage(lng)}>
-                {lngs[lng].nativeName}
-              </button>
-            ))}
-          </Box>
-        </Grid2> */}
-      </Grid2>
+        </Grid>
+      </Grid>
     </Box>
   );
 }

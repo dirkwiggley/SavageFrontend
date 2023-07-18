@@ -6,7 +6,6 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import About from "./components/About";
 import Login from "./components/Login";
-import CombatTracker from "./components/CombatTracker";
 import Profile from "./components/Profile";
 import Users from "./components/Users";
 import ResetPwd from "./components/ResetPwd";
@@ -15,10 +14,11 @@ import Locales from "./components/Locales";
 import Exit from "./components/Exit";
 import Footer from "./components/Footer";
 import { AuthProvider } from './components/AuthStore';
+import BackgroundBox from './components/BackgroundBox';
 
 function App() {
   return (
-    <Box>
+    <BackgroundBox>
       <AuthProvider>
         <Router>
           <Navbar />
@@ -27,7 +27,6 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/combattracker" element={<CombatTracker />} />
             <Route path="/login/:showLogin" element={<Login />} />
             <Route path="/users" element={<Users />} />
             <Route path="/resetpassword" element={<ResetPwd />} />
@@ -38,7 +37,7 @@ function App() {
           <Footer />
         </Router>
       </AuthProvider>
-    </Box>
+    </BackgroundBox>
   );
 }
 

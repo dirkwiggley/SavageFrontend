@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Paper } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import { useAuthStore } from "./AuthStore";
 import { styled } from "@mui/system";
 import { useTranslation } from "react-i18next";
@@ -53,7 +53,7 @@ function Footer() {
     }
   }, [auth, setLogin, setNickname]);
 
-  const out = `${t('footer.user')}: ${login} (${nickname})`;
+  const out = <Typography variant="h6" component="span" sx={{ mr: 2 }}>{`${t('footer.user')}: ${login} (${nickname})`}</Typography>;
 
   return (
     <NonMobileBox>

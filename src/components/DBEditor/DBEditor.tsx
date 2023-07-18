@@ -52,11 +52,11 @@ const StyledTableCell = styled(TableCell, {
 });
 
 const StyledHeaderGrid = styled(Box)({
-  marginTop: "50px",
-  padding: 4,
+  // marginTop: "50px",
+  padding: 50,
   justifyContent: "center",
   alignContent: "center",
-  display: "block"
+  display: "block",
 });
 
 interface AnchorPoint {
@@ -103,9 +103,9 @@ export default function CustomPaginationActionsTable() {
   }, [auth?.locale]);
 
   const themeWithLocale = React.useMemo(
-    () => { 
+    () => {
       let lang = null;
-      if (auth?.locale) { 
+      if (auth?.locale) {
         lang = locales[auth?.locale! as SupportedLocales];
       } else {
         lang = locales[locale];
