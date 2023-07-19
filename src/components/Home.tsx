@@ -98,7 +98,7 @@ function Home() {
               </CardContent>
               <CardActions>
                 <Button onClick={(e) => handleClick(e)} size="small">
-                  {t('home.action')}
+                  <Typography color="text.primary">{t('home.action')}</Typography>
                 </Button>
               </CardActions>
             </Card>

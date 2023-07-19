@@ -9,7 +9,6 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { Link as MaterialLink } from "@mui/material";
-import { styled } from "@mui/system";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 
 import { useTranslation, Trans } from "react-i18next";
@@ -158,7 +157,7 @@ export default function MenuAppBar() {
               </Menu>
             </Box>
           </MobileBox>
-          <Typography variant="h6" component="span" sx={{ mr: 2, fontWeight: "bold" }}>
+          <Typography variant="h6" component="span" color="white" sx={{ mr: 2, fontWeight: "bold" }}>
             App
           </Typography>
           <NonMobileBox>
@@ -245,7 +244,7 @@ export default function MenuAppBar() {
             aria-controls="menu-appbar"
             aria-haspopup="true"
             onClick={handleUserMenu}
-            color="inherit"
+            color="info"
           >
             <AccountCircle />
           </IconButton>

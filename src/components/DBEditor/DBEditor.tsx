@@ -228,11 +228,11 @@ export default function CustomPaginationActionsTable() {
                   scope="row"
                   key={index}
                   sx={{
-                    bgcolor: "#2F8F9D",
+                    bgcolor: "rgba(210, 180, 140, 1.0)",
                     border: "2px",
                     "&:hover": {
                       cursor: "pointer",
-                      backgroundColor: "#3BACB6",
+                      backgroundColor: "rgba(217, 189, 176, 1.0)",
                     },
                   }}
 

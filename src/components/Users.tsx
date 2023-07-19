@@ -1,3 +1,4 @@
+import { blueGrey } from '@mui/material/colors';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -17,17 +18,18 @@ import {
   SelectChangeEvent,
   Snackbar,
   Alert,
-  Autocomplete
+  Autocomplete,
+  Grid
 } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import { useTranslation } from "react-i18next";
-import { UserInterface } from '../types';
 
 import { useAuthContext } from "./AuthStore";
 import API, { authHelper, RoleType, isRole, isUserInterface } from '../api';
-import { getLanguageFromId } from "./Locales";
-
+import { UserInterface } from "../types";
 import { AlertColor } from '@mui/material/Alert';
+import { supportedLocales } from './Locales';
+import { MobileBox, NonMobileBox } from './MobileBox';
 
 const PAPER_COLOR = "#99d6ff";
 const LIGHT_PAPER_COLOR = "#a8e6f0";
@@ -41,11 +43,20 @@ const StackItem = styled(Box)(({ theme }) => ({
 }));
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  backgroundColor: PAPER_COLOR,
+  //backgroundColor: PAPER_COLOR,
+  backgroundColor: "rgba(210, 180, 140, 0.5)",
   width: '90%',
   justify: 'center',
-  textAlign: 'center'
+  textAlign: 'center',
+  typography: {
+    fontFamily: [
+      'Caprasimo',
+      'arial',
+    ].join(','),
+  },
 }));
+
+const DEFAULT_LOCALE_ID = "enUS";
 
 const Users = () => {
   const { t, i18n } = useTranslation();
@@ -53,11 +64,13 @@ const Users = () => {
   const [auth, setAuth] = useAuthContext();
   const [users, setUsers] = useState<JSX.Element[]>([]);
   const [userId, setUserId] = useState<string>("");
+  const [locales, setLocales] = useState<JSX.Element[]>([]);
   const [login, setLogin] = useState<string>("");
   const [nickname, setNickname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [roles, setRoles] = useState<string[] | null>(null);
-  const [locale, setLocale] = useState<string>("enUS");
+  const [locale, setLocale] = useState<string>(DEFAULT_LOCALE_ID);
+  const [prevLocale, setPrevLocale] = useState<string>(DEFAULT_LOCALE_ID)
   const [active, setActive] = useState<boolean>(false);
   const [resetpwd, setResetpwd] = useState<boolean>(false);
   const [refreshtoken, setRefreshToken] = useState<string | undefined>("");
@@ -84,13 +97,13 @@ const Users = () => {
     if (!auth || auth.login === "nobody") {
       navigate("/login/true");
     }
-    
+
     const admin = auth ? auth.roles.includes('ADMIN') : false;
     if (!admin) {
       navigate("/home");
     } else {
       if (auth) {
-        const resetPwd = (auth.resetpwd === false) ? false : true;
+        const resetPwd = auth.resetpwd ? true : false;
         setUserId(auth.id.toString());
         setLogin(auth.login);
         setNickname(auth.nickname);
@@ -134,7 +147,11 @@ const Users = () => {
     }).catch(err => {
       console.error(err);
     });
-  }, [auth, navigate, t]);
+  }, [auth, navigate]);
+
+  useEffect(() => {
+    getLocalesAndUpdateSelect();
+  }, []);
 
   const isAdmin = () => {
     return auth ? auth.roles.includes('ADMIN') : false;
@@ -155,6 +172,15 @@ const Users = () => {
     }).catch(err => {
       console.error(err);
     });
+  }
+
+  const getLocalesAndUpdateSelect = () => {
+    const allLocales = supportedLocales;
+    const localeArray: Array<JSX.Element> = [];
+    allLocales.forEach(element => {
+      localeArray.push(<MenuItem key={element.id} value={element.id}>{element.label}</MenuItem>);
+    });
+    setLocales(localeArray);
   }
 
   const resetUser = (id = "") => {
@@ -182,6 +208,7 @@ const Users = () => {
           setEmail(response.email);
           setRoles(response.roles);
           setLocale(response.locale);
+          setPrevLocale(response.locale);
           setActive(response.active);
           setResetpwd(response.resetpwd);
           setRefreshToken(response.refreshtoken);
@@ -193,6 +220,11 @@ const Users = () => {
           resetUser();
         });
     }
+  }
+
+  const handleSelectLocale = (event: SelectChangeEvent<unknown>) => {
+    const selectedId: string = event.target.value as string;
+    setLocale(selectedId);
   }
 
   const handleActive = () => {
@@ -253,6 +285,11 @@ const Users = () => {
           setOpenSnackbar(true);
         }
         getUsersAndUpdateSelect();
+
+        if (auth?.id === userInfo.id && prevLocale !== locale) {
+          i18n.changeLanguage(locale?.slice(0, 2));
+          setPrevLocale(locale);
+        }
       }).catch(err => {
         setSnackbarType("error");
         const msg = t('user.updatefailure');
@@ -309,7 +346,7 @@ const Users = () => {
   const getSnackbar = () => {
     return (
       <Snackbar anchorOrigin={{ "vertical": "top", "horizontal": "center" }} open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar}>
-        <Alert onClose={handleCloseSnackbar} severity={snackbarType} sx={{ width: '100%'}}>{snackbarMsg}</Alert>
+        <Alert onClose={handleCloseSnackbar} severity={snackbarType} sx={{ width: '100%' }}>{snackbarMsg}</Alert>
       </Snackbar>
     );
   }
@@ -332,115 +369,249 @@ const Users = () => {
     jsRoles = roles;
   }
 
-  const getLang = () => {
+  const getActive = () => {
+    if (active) return true;
+    return false;
+  }
 
+  const getUserEditor = () => {
+    return (
+      <Box
+        display="flex"
+        justifyContent="Center"
+        sx={{
+          minWidth: '50%',
+          mt: 3
+        }}>
+        {getSnackbar()}
+        <StyledPaper square={false} >
+          <Stack spacing={0}>
+            <StackItem><Typography variant="h5" component="span" sx={{ mr: 2 }}>{t('user.title')}</Typography></StackItem>
+            <StackItem>
+              <FormControl variant="filled" fullWidth>
+                <InputLabel id="select-label">{t('user.user')}</InputLabel>
+                <Select
+                  labelId="select-label"
+                  id="select-user"
+                  value={users?.length > 0 ? userId : ""}
+                  onChange={(evt) => handleSelectUser(evt)}
+                >
+                  {users}
+                </Select>
+              </FormControl>
+            </StackItem>
+            <StackItem>
+              <FormControl variant="filled" fullWidth>
+                {getLoginInput()}
+              </FormControl>
+            </StackItem>
+            <StackItem>
+              <FormControl variant="filled" fullWidth>
+                <TextField
+                  id="nicknameInput"
+                  label={t('user.nickname')}
+                  InputLabelProps={{ shrink: true }}
+                  autoComplete="off"
+                  value={nickname}
+                  onChange={(evt) => handleInputChange(evt, "nicknameInput")} />
+              </FormControl>
+            </StackItem>
+            <StackItem>
+              <FormControl variant="filled" fullWidth>
+                <TextField
+                  id="emailInput"
+                  label={t('user.email')}
+                  InputLabelProps={{ shrink: true }}
+                  autoComplete="off"
+                  value={email}
+                  onChange={(evt) => handleInputChange(evt, "emailInput")} />
+              </FormControl>
+            </StackItem>
+            <StackItem>
+              <FormControl variant="filled" fullWidth>
+                <InputLabel id="select-locale-label">{t('user.locale')}</InputLabel>
+                <Select
+                  labelId="select-locale-label"
+                  id="select-locale"
+                  value={locales?.length > 0 ? locale : ""}
+                  onChange={(evt) => handleSelectLocale(evt)}
+                >
+                  {locales}
+                </Select>
+              </FormControl>
+            </StackItem>
+            <StackItem>
+              <StyledPaper sx={{ backgroundColor: "rgba(153,214,255,0.5)", width: "100%" }}>
+                <Typography sx={{ display: "flex", ml: 2, pt: 2 }} >
+                  {t('user.roles')}
+                </Typography>
+                <FormControl sx={{ width: "100%", ml: 2 }}>
+                  {jsRolesList.map((option) => (
+                    <FormGroup key={option}>
+                      {/* Is this option in the users roles? */}
+                      <FormControlLabel control={<Checkbox checked={isCheckedRole(option)} sx={{ color: blueGrey[900], '&.Mui-checked': { color: blueGrey[900] } }} />} label={option} onChange={() => handleChangeRoles(option)} />
+                    </FormGroup>
+                  ))}
+                </FormControl>
+              </StyledPaper>
+            </StackItem>
+            <StackItem>
+              <StyledPaper sx={{ backgroundColor: "rgba(153,214,255,0.5)", width: "100%" }}>
+                <Stack>
+                  <StackItem>
+                    <Typography sx={{ p: 0, ml: 1 }}>
+                      {t('user.misc')}
+                    </Typography>
+                  </StackItem>
+                  <StackItem>
+                    <FormGroup>
+                      <FormControlLabel control={
+                        <Checkbox id="active" checked={getActive()} onClick={handleActive} color="default" 
+                          sx={{ p: 0, ml: 2, color: blueGrey[900], '&.Mui-checked': { color: blueGrey[900] } }} />}
+                          label={t('user.active')} />
+                    </FormGroup>
+                  </StackItem>
+                  <StackItem>
+                    <FormGroup>
+                      <FormControlLabel control={<Checkbox id="resetpassword" checked={resetpwd} onClick={handleResetpwd} 
+                        sx={{ p: 0, ml: 2,color: blueGrey[900], '&.Mui-checked': { color: blueGrey[900] } }} />} label={t('user.resetpwd')} />
+                    </FormGroup>
+                  </StackItem>
+                </Stack>
+              </StyledPaper>
+            </StackItem>
+            <StackItem>
+              <Button variant="contained" onClick={handleUpdate}>{t('user.update')}</Button>
+            </StackItem>
+          </Stack>
+        </StyledPaper>
+      </Box>
+    );
   }
 
   return (
-    <Box
-      display="flex"
-      justifyContent="Center"
-      sx={{
-        width: '90%',
-        mt: 1
-      }}>
-      {getSnackbar()}
-      <StyledPaper square={false} >
-        <Stack spacing={0}>
-          <StackItem><h3>{t('user.title')}</h3></StackItem>
-          <StackItem>
-            <FormControl variant="filled" fullWidth>
-              <InputLabel id="select-label">{t('user.user')}</InputLabel>
-              <Select
-                labelId="select-label"
-                id="select-user"
-                value={users?.length > 0 ? userId : ""}
-                onChange={(evt) => handleSelectUser(evt)}
-              >
-                {users}
-              </Select>
-            </FormControl>
-          </StackItem>
-          <StackItem>
-            <FormControl variant="filled" fullWidth>
-              {getLoginInput()}
-            </FormControl>
-          </StackItem>
-          <StackItem>
-            <FormControl variant="filled" fullWidth>
-              <TextField
-                id="nicknameInput"
-                label={t('user.nickname')}
-                InputLabelProps={{ shrink: true }}
-                autoComplete="off"
-                value={nickname}
-                onChange={(evt) => handleInputChange(evt, "nicknameInput")} />
-            </FormControl>
-          </StackItem>
-          <StackItem>
-            <FormControl variant="filled" fullWidth>
-              <TextField
-                id="emailInput"
-                label={t('user.email')}
-                InputLabelProps={{ shrink: true }}
-                autoComplete="off"
-                value={email}
-                onChange={(evt) => handleInputChange(evt, "emailInput")} />
-            </FormControl>
-          </StackItem>
-          <StackItem>
-            <FormControl variant="filled" fullWidth>
-              <TextField
-                id="localeInput"
-                label={t('user.locale')}
-                InputLabelProps={{ shrink: true }}
-                autoComplete="off"
-                value={getLanguageFromId(locale)}
-                disabled />
-            </FormControl>
-          </StackItem>
-          <StackItem>
-            <StyledPaper sx={{ backgroundColor: LIGHT_PAPER_COLOR, width: "100%" }}>
-              <Typography sx={{ display: "flex", ml: 2, pt: 2 }} >
-                {t('user.roles')}
-              </Typography>
-              <FormControl sx={{ width: "100%", ml: 2 }}>
-                {jsRolesList.map((option) => (
-                  <FormGroup key={option}>
-                    {/* Is this option in the users roles? */}
-                    <FormControlLabel control={<Checkbox checked={isCheckedRole(option)} />} label={option} onChange={() => handleChangeRoles(option)} />
-                  </FormGroup>
-                ))}
-              </FormControl>
-            </StyledPaper>
-          </StackItem>
-          <StackItem>
-            <StyledPaper sx={{ backgroundColor: "#a8e6f0", width: "100%" }}>
-              <Stack>
-                <StackItem>
-                  <Typography sx={{ p: 0, ml: 1 }}>
-                    {t('user.misc')}
-                  </Typography>
-                </StackItem>
-                <StackItem>
-                  <FormGroup>
-                    <FormControlLabel control={<Checkbox id="active" checked={active} onClick={handleActive} sx={{ p: 0, ml: 2 }} />} label={t('user.active')} />
-                  </FormGroup>
-                </StackItem>
-                <StackItem>
-                  <FormGroup>
-                    <FormControlLabel control={<Checkbox id="resetpassword" checked={resetpwd} onClick={handleResetpwd} sx={{ p: 0, ml: 2 }} />} label={t('user.resetpwd')} />
-                  </FormGroup>
-                </StackItem>
-              </Stack>
-            </StyledPaper>
-          </StackItem>
-          <StackItem>
-            <Button variant="contained" onClick={handleUpdate}>{t('user.update')}</Button>
-          </StackItem>
-        </Stack>
-      </StyledPaper>
-    </Box>
+    <>
+      <MobileBox>
+        {getUserEditor()}
+      </MobileBox>
+      <NonMobileBox>
+        <Grid container>
+          <Grid item xs></Grid>
+          <Grid item xs={3}>
+            <Box
+              display="flex"
+              justifyContent="Center"
+              sx={{
+                minWidth: '50%',
+                mt: 3
+              }}>
+              {getSnackbar()}
+              <StyledPaper square={false} >
+                <Stack spacing={0}>
+                  <StackItem><Typography variant="h5" component="span" sx={{ mr: 2 }}>{t('user.title')}</Typography></StackItem>
+                  <StackItem>
+                    <FormControl variant="filled" fullWidth>
+                      <InputLabel id="select-label">{t('user.user')}</InputLabel>
+                      <Select
+                        labelId="select-label"
+                        id="select-user"
+                        value={users?.length > 0 ? userId : ""}
+                        onChange={(evt) => handleSelectUser(evt)}
+                      >
+                        {users}
+                      </Select>
+                    </FormControl>
+                  </StackItem>
+                  <StackItem>
+                    <FormControl variant="filled" fullWidth>
+                      {getLoginInput()}
+                    </FormControl>
+                  </StackItem>
+                  <StackItem>
+                    <FormControl variant="filled" fullWidth>
+                      <TextField
+                        id="nicknameInput"
+                        label={t('user.nickname')}
+                        InputLabelProps={{ shrink: true }}
+                        autoComplete="off"
+                        value={nickname}
+                        onChange={(evt) => handleInputChange(evt, "nicknameInput")} />
+                    </FormControl>
+                  </StackItem>
+                  <StackItem>
+                    <FormControl variant="filled" fullWidth>
+                      <TextField
+                        id="emailInput"
+                        label={t('user.email')}
+                        InputLabelProps={{ shrink: true }}
+                        autoComplete="off"
+                        value={email}
+                        onChange={(evt) => handleInputChange(evt, "emailInput")} />
+                    </FormControl>
+                  </StackItem>
+                  <StackItem>
+                    <FormControl variant="filled" fullWidth>
+                      <InputLabel id="select-locale-label">{t('user.locale')}</InputLabel>
+                      <Select
+                        labelId="select-locale-label"
+                        id="select-locale"
+                        value={locales?.length > 0 ? locale : ""}
+                        onChange={(evt) => handleSelectLocale(evt)}
+                      >
+                        {locales}
+                      </Select>
+                    </FormControl>
+                  </StackItem>
+                  <StackItem>
+                    <StyledPaper sx={{ backgroundColor: "rgba(217, 189, 176,0.5)", width: "100%" }}>
+                      <Typography sx={{ display: "flex", ml: 2, pt: 2 }} >
+                        {t('user.roles')}
+                      </Typography>
+                      <FormControl sx={{ width: "100%", ml: 2 }}>
+                        {jsRolesList.map((option) => (
+                          <FormGroup key={option}>
+                            {/* Is this option in the users roles? */}
+                            <FormControlLabel control={<Checkbox checked={isCheckedRole(option)} 
+                              sx={{ color: blueGrey[900], '&.Mui-checked': { color: blueGrey[900] } }} />} label={option} onChange={() => handleChangeRoles(option)} />
+                          </FormGroup>
+                        ))}
+                      </FormControl>
+                    </StyledPaper>
+                  </StackItem>
+                  <StackItem>
+                    <StyledPaper sx={{ backgroundColor: "rgba(217, 189, 176,0.5)", width: "100%" }}>
+                      <Stack>
+                        <StackItem>
+                          <Typography sx={{ p: 0, ml: 1 }}>
+                            {t('user.misc')}
+                          </Typography>
+                        </StackItem>
+                        <StackItem>
+                          <FormGroup>
+                            <FormControlLabel control={<Checkbox id="active" checked={getActive()} onClick={handleActive} 
+                              sx={{ p: 0, ml: 2, color: blueGrey[900], '&.Mui-checked': { color: blueGrey[900] }, }} />}  label={t('user.active')} />
+                          </FormGroup>
+                        </StackItem>
+                        <StackItem>
+                          <FormGroup>
+                            <FormControlLabel control={<Checkbox id="resetpassword" checked={resetpwd} onClick={handleResetpwd} 
+                              sx={{ p: 0, ml: 2, color: blueGrey[900], '&.Mui-checked': { color: blueGrey[900] }, }} />} label={t('user.resetpwd')} />
+                          </FormGroup>
+                        </StackItem>
+                      </Stack>
+                    </StyledPaper>
+                  </StackItem>
+                  <StackItem>
+                    <Button variant="contained" onClick={handleUpdate}>{t('user.update')}</Button>
+                  </StackItem>
+                </Stack>
+              </StyledPaper>
+            </Box>
+          </Grid>
+          <Grid item xs></Grid>
+        </Grid>
+      </NonMobileBox>
+    </>
   );
 }
 
