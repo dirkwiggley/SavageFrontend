@@ -172,13 +172,13 @@ function Login() {
                       variant="contained"
                       color="primary"
                       type="submit"
-                      sx={{ width: "100%", bgcolor: "background.darkestBlue" }} >{t('login.submit')}</Button>
+                      sx={{ width: "100%", bgcolor: "background.otherBackground" }} >{t('login.submit')}</Button>
                   </Grid>
                 </Grid>
               </form>
             </Grid>
             <Grid item>
-              <Muilink href="#" variant="body2" sx={{ color: "background.darkestBlue" }}>{t('login.forgotpassword')}</Muilink>
+              <Muilink href="#" variant="body2" sx={{ color: "background.otherBackground" }}>{t('login.forgotpassword')}</Muilink>
             </Grid>
           </StyledPaper >
         </StyledGrid >

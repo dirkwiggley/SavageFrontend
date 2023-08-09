@@ -37,10 +37,10 @@ export const otherColors = {
     // background: {
     //   medium: "#3BACB6",
     //   light: "#82DBD8",
-      // darkestBlue: "#2155CD",
+      // otherBackground: "#2155CD",
       primaryMain: "rgba(210, 180, 140, 1.0)",
       primaryLight: "rgba(217, 189, 176, 1.0)",
-      darkestBlue: "#D2B48C",
+      otherBackground: "#D2B48C",
     //   darkerBlue: "#0AA1DD",
     //   lightBlue: "#79DAE8",
     //   lightestBlue: "#E8F9FD",

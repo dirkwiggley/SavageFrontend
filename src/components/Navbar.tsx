@@ -114,7 +114,7 @@ export default function MenuAppBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="sticky" sx={{ boxShadow: 0 }}>
-        <Toolbar sx={{ bgcolor: otherColors.darkestBlue }}>
+        <Toolbar sx={{ bgcolor: otherColors.otherBackground }}>
           <MobileBox onClick={handleAppMenu}>
             <IconButton
               size="large"
@@ -144,6 +144,9 @@ export default function MenuAppBar() {
                 <MenuItem onClick={handleHome}>{t('navbar.home')}</MenuItem>
                 {roles && roles.length > 0 ? (
                   <MenuItem onClick={handleAbout}>{t('navbar.about')}</MenuItem>
+                ) : null}
+                {roles && roles.length > 0 ? (
+                  <MenuItem onClick={handleCombatTracker}>{t('navbar.campaign')}</MenuItem>
                 ) : null}
                 {roles && roles.length > 0 ? (
                   <MenuItem onClick={handleCombatTracker}>Combat Tracker</MenuItem>

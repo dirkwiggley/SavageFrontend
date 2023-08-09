@@ -23,6 +23,7 @@ i18n
             home: "Home",
             about: "About",
             users: "Users",
+            campaign: "Campaign",
             dbeditor: "DB Editor",
             profile: "Profile",
             login: "Login",
@@ -41,11 +42,11 @@ i18n
             loginfailed: "Login Failed",
           },
           home: {
-            head: "Lizard",
+            head: "Savage Worlds",
             body1:
-              "Lizards are a widespread group of squamate reptiles, with over ",
+              "Savage Worlds is the core ruleset for all of Pinnacle’s roleplaying games. ",
             body2:
-              "6,000 species, ranging across all continents except Antarctica",
+              "This game references the Savage Worlds game system, available from Pinnacle Entertainment Group at www.peginc.com. Savage Worlds and all associated logos and trademarks are copyrights of Pinnacle Entertainment Group. Used with permission. Pinnacle makes no representation or warranty as to the quality, viability, or suitability for purpose of this product.",
             action: "Learn More",
           },
           locales: {
@@ -87,6 +88,7 @@ i18n
           },
           footer: {
             user: "User",
+            notloggedIn: "Not Logged In",
           }
         },
       },
@@ -96,6 +98,7 @@ i18n
             home: "Heim",
             about: "Um",
             users: "Benutzer",
+            campaign: "Kampagne",
             dbeditor: "DB-Editor",
             profile: "Profil",
             login: "Anmeldung",
@@ -114,10 +117,11 @@ i18n
             loginfailed: "Fehler bei der Anmeldung",
           },
           home: {
-            head: "Eidechse",
-            body1:
-              "Eidechsen sind eine weit verbreitete Gruppe von Squamat-Reptilien, mit über ",
-            body2: "6.000 Arten auf allen Kontinenten außer der Antarktis",
+            head: "Wilde Welten",
+            body1: 
+              "Savage Worlds ist der Kernregelsatz für alle Rollenspiele von Pinnacle. ",
+            body2: 
+              "Dieses Spiel bezieht sich auf das Spielsystem Savage Worlds, erhältlich bei der Pinnacle Entertainment Group unter www.peginc.com. Savage Worlds und alle damit verbundenen Logos und Marken unterliegen dem Urheberrecht der Pinnacle Entertainment Group. Mit Genehmigung verwendet. Pinnacle gibt keine Zusicherungen oder Garantien hinsichtlich der Qualität, Brauchbarkeit oder Eignung für den Zweck dieses Produkts.",
             action: "Weitere Informationen",
           },
           locales: {
@@ -159,6 +163,7 @@ i18n
           },
           footer: {
             user: "Benutzer",
+            notloggedIn: "Nicht eingeloggt",
           }
         },          
       },
@@ -168,6 +173,7 @@ i18n
             home: "Lar",
             about: "Sobre",
             users: "Usuários",
+            campaign: "Campanha",
             dbeditor: "Editor de banco de dados",
             profile: "Perfil",
             login: "Conecte-se",
@@ -186,11 +192,11 @@ i18n
             loginfailed: "Falha no login",
           },
           home: {
-            head: "Lagarto",
+            head: "Mundos Selvagens",
             body1:
-              "Os lagartos são um grupo difundido de répteis escamados, com mais de ",
+              "Savage Worlds é o conjunto de regras básico para todos os jogos de RPG da Pinnacle. ",
             body2:
-              "6.000 espécies, abrangendo todos os continentes, exceto a Antártida",
+              "Este jogo faz referência ao sistema de jogo Savage Worlds, disponível no Pinnacle Entertainment Group em www.peginc.com. Savage Worlds e todos os logotipos e marcas comerciais associados são direitos autorais da Pinnacle Entertainment Group. Usado com permissão. A Pinnacle não faz nenhuma representação ou garantia quanto à qualidade, viabilidade ou adequação para a finalidade deste produto.",
             action: "Saber mais",
           },
           locales: {
@@ -232,6 +238,7 @@ i18n
           },
           footer: {
             user: "Do utilizador",
+            notloggedIn: "Não logado",
           }
         },
       },

@@ -53,8 +53,8 @@ function Home() {
         <iframe
           width="345"
           height="202"
-          src="https://www.youtube.com/embed/odM92ap8_c0"
-          title="Godzilla vs. Kong – Official Trailer"
+          src="https://www.youtube.com/embed/efTGgfel3mw"
+          title="Savage Worlds"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         ></iframe>
@@ -65,8 +65,8 @@ function Home() {
           component="img"
           width="345"
           height="202"
-          image="/godzilla.png"
-          alt="green iguana"
+          image="/SW_LOGO_FP_2018.png"
+          alt="Savage Worlds Logo"
         />
       )
     }

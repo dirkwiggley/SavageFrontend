@@ -8,7 +8,7 @@ import { otherColors } from "../theme";
 import { useAuthContext } from "./AuthStore";
 
 const paperStyle = {
-  bgcolor: "background.darkestBlue",
+  bgcolor: "background.otherBackground",
   color: "#FFFFFF",
   borderRadius: 0,
   width: "100vw",
@@ -53,14 +53,20 @@ function Footer() {
     }
   }, [auth, setLogin, setNickname]);
 
-  const out = <Typography variant="h6" component="span" sx={{ mr: 2 }}>{`${t('footer.user')}: ${login} (${nickname})`}</Typography>;
+  const getUserTypography = () => {
+    if (login === "nobody") {
+      return <Typography variant="h6" component="span" sx={{ mr: 2 }}>{`${t('footer.notloggedIn')}`}</Typography>;
+    } else {
+      return <Typography variant="h6" component="span" sx={{ mr: 2 }}>{`${t('footer.user')}: ${login} (${nickname})`}</Typography>;
+    }
+  }
 
   return (
     <NonMobileBox>
       <footer>
         <Box sx={{ flexGrow: 1 }}>
-          <Paper sx={{ ...paperStyle, bgcolor: otherColors.darkestBlue }}>
-            <Box sx={{ ml: 2 }}>{login ? out : "-"}</Box>
+          <Paper sx={{ ...paperStyle, bgcolor: otherColors.otherBackground }}>
+            <Box sx={{ ml: 2 }}>{login ? getUserTypography() : "-"}</Box>
           </Paper>
         </Box>
       </footer>
