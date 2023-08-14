@@ -11,6 +11,7 @@ import Users from "./components/Users";
 import ResetPwd from "./components/ResetPwd";
 import DBEditor from "./components/DBEditor/DBEditor";
 import Locales from "./components/Locales";
+import Campaigns from "./components/Campaign";
 import Exit from "./components/Exit";
 import Footer from "./components/Footer";
 import { AuthProvider } from './components/AuthStore';
@@ -32,6 +33,7 @@ function App() {
             <Route path="/resetpassword" element={<ResetPwd />} />
             <Route path="/dbeditor" element={<DBEditor />} />
             <Route path="/locales" element={<Locales />} />
+            <Route path="/campaigns" element={<Campaigns />} />
             <Route path="/exit" element={<Exit />} />
           </Routes>
           <Footer />

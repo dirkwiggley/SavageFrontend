@@ -1,6 +1,7 @@
 import axios from "axios";
 import CONFIG from "./config";
 import { UserInterface } from "./types";
+import { CampaignInterface } from "./components/Campaign";
 // import { refreshTokenIsString } from "./components/AuthStore";
 
 const axiosJWT = axios.create();
@@ -286,6 +287,58 @@ export default class API {
       { withCredentials: true }
     );
   };
+
+  static getCampaignById = async (campaignId: number) => {
+    return await axios.get(
+      `${CONFIG.baseDbURL}/campaign/id/${campaignId}`,
+      { withCredentials: true }
+    );
+  }
+
+  static getCampaignByName = async (campaignName: string) => {
+    return await axios.get(
+      `${CONFIG.baseDbURL}/campaign/name/${campaignName}`,
+      { withCredentials: true }
+    );
+  }
+
+  static isCampaignInterface = (obj:any) : obj is CampaignInterface => {
+    if (typeof obj.id === "number" &&
+        typeof obj.name === "string" &&
+        typeof obj.ownerid === "number" &&
+        typeof obj.ownernickname === "string" &&
+        typeof obj.hindrances === "number" && 
+        typeof obj.attributes === "number" && 
+        typeof obj.skills === "number")
+          return true;
+    else
+      return false;
+  }
+
+  static isCampaignArray(obj: any): obj is Array<CampaignInterface> {
+    if (obj && Array.isArray(obj) && (obj.length === 0 || API.isCampaignInterface(obj[0])))
+      return true;
+    return false;
+  }
+
+  static getCampaigns = async () => {
+    try {
+      const response = await axios.get(`${CONFIG.baseDbURL}/campaigns/`,
+       { withCredentials: true }
+      );
+      if (!response?.data.error && this.isCampaignArray(response.data)) {
+        return response.data;
+      }
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        await API.refreshToken();
+        return (async (error: any) => {
+          console.error(error);
+          throw error;
+        });
+      }
+    }
+  }
 
   static sendWSMsg = (fromUserId: number, toUserId: number, message: string) => {
     return axios.post(

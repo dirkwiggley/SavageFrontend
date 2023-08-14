@@ -105,6 +105,11 @@ export default function MenuAppBar() {
     navigate("/locales");
   }
 
+  const handleCampaign = (event: React.SyntheticEvent) => {
+    event.stopPropagation();
+    navigate("/campaigns");
+  }
+
   const handleCombatTracker = (event: React.SyntheticEvent) => {
     event.stopPropagation();
     handleClose();
@@ -146,7 +151,7 @@ export default function MenuAppBar() {
                   <MenuItem onClick={handleAbout}>{t('navbar.about')}</MenuItem>
                 ) : null}
                 {roles && roles.length > 0 ? (
-                  <MenuItem onClick={handleCombatTracker}>{t('navbar.campaign')}</MenuItem>
+                  <MenuItem onClick={handleCampaign}>{t('navbar.campaign')}</MenuItem>
                 ) : null}
                 {roles && roles.length > 0 ? (
                   <MenuItem onClick={handleCombatTracker}>Combat Tracker</MenuItem>
@@ -173,7 +178,6 @@ export default function MenuAppBar() {
                 mr: 1, 
                 color: "#FFFFFF",
                 fontWeight: "bold",
-                // textShadow: '2px 2px 10px rgba(0, 0, 0, 1.0), -2px -2px 1px rgba(0, 0, 0, 1.0)' 
               }}
             >
               <Typography variant="h6" component="span" sx={{ mr: 2 }}>{t('navbar.home')}</Typography>
@@ -187,7 +191,6 @@ export default function MenuAppBar() {
                 mr: 1, 
                 color: "#FFFFFF",
                 fontWeight: "bold",
-                // textShadow: '2px 2px 10px rgba(0, 0, 0, 1.0), -2px -2px 1px rgba(0, 0, 0, 1.0)' 
               }}
             >
               <Typography variant="h6" component="span" sx={{ mr: 2 }}>{t('navbar.about')}</Typography>
@@ -202,10 +205,24 @@ export default function MenuAppBar() {
                   mr: 1, 
                   color: "#FFFFFF",
                   fontWeight: "bold",
-                  // textShadow: '2px 2px 10px rgba(0, 0, 0, 1.0), -2px -2px 1px rgba(0, 0, 0, 1.0)' 
                 }}
               >
                 <Typography variant="h6" component="span" sx={{ mr: 2 }}>{t('navbar.users')}</Typography>
+              </MaterialLink>
+            ) : null}
+            {isAdmin ? (
+              <MaterialLink
+                component={RouterLink}
+                to="/campaigns"
+                sx={{ 
+                  flexGrow: 1, 
+                  ml: 1, 
+                  mr: 1, 
+                  color: "#FFFFFF",
+                  fontWeight: "bold",
+                }}
+              >
+                <Typography variant="h6" component="span" sx={{ mr: 2 }}>{t('navbar.campaign')}</Typography>
               </MaterialLink>
             ) : null}
             {isAdmin ? (
@@ -218,7 +235,6 @@ export default function MenuAppBar() {
                   mr: 1, 
                   color: "#FFFFFF",
                   fontWeight: "bold",
-                  // textShadow: '2px 2px 10px rgba(0, 0, 0, 1.0), -2px -2px 1px rgba(0, 0, 0, 1.0)' 
                 }}
               >
                 <Typography variant="h6" component="span" sx={{ mr: 2 }}>{t('navbar.dbeditor')}</Typography>
@@ -234,7 +250,6 @@ export default function MenuAppBar() {
                   mr: 1, 
                   color: "#FFFFFF",
                   fontWeight: "bold",
-                  // textShadow: '2px 2px 10px rgba(0, 0, 0, 1.0), -2px -2px 1px rgba(0, 0, 0, 1.0)' 
                 }}
               >
                 <Typography variant="h6" component="span" sx={{ mr: 2 }}>{t('navbar.profile')}</Typography>
