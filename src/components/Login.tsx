@@ -178,7 +178,7 @@ function Login() {
               </form>
             </Grid>
             <Grid item>
-              <Muilink href="#" variant="body2" sx={{ color: "background.otherBackground" }}>{t('login.forgotpassword')}</Muilink>
+              <Muilink href="#" variant="body2" sx={{ color: "black" }}>{t('login.forgotpassword')}</Muilink>
             </Grid>
           </StyledPaper >
         </StyledGrid >

@@ -6,6 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   openDlg: boolean,
@@ -14,6 +15,8 @@ interface Props {
 }
 
 export default function AddTableDialog({ openDlg, setOpen, createCallback } : Props) {
+  const { t, i18n } = useTranslation();
+  
   const [show, setShow] = React.useState(openDlg);
   const [setShowDlg] = React.useState(setOpen);
   const [create] = React.useState(createCallback);
@@ -34,10 +37,10 @@ export default function AddTableDialog({ openDlg, setOpen, createCallback } : Pr
   return (
     <div>
       <Dialog open={show} onClose={handleClose}>
-        <DialogTitle>Create Table</DialogTitle>
+        <DialogTitle>{t('dbeditor.createTable')}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Enter the name of the table and one column name that you would like to create.
+            {t('dbeditor.tableName')}
           </DialogContentText>
           <TextField
             autoFocus
@@ -58,8 +61,8 @@ export default function AddTableDialog({ openDlg, setOpen, createCallback } : Pr
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => handleClose("cancel")}>Cancel</Button>
-          <Button onClick={() => handleClose("add")}>Create Table</Button>
+          <Button onClick={() => handleClose("cancel")}>{t('dbeditor.cancel')}</Button>
+          <Button onClick={() => handleClose("add")}>{t('dbeditor.createTable')}</Button>
         </DialogActions>
       </Dialog>
     </div>

@@ -107,6 +107,7 @@ export default function MenuAppBar() {
 
   const handleCampaign = (event: React.SyntheticEvent) => {
     event.stopPropagation();
+    handleClose();
     navigate("/campaigns");
   }
 

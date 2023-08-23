@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Box, Paper, Typography } from "@mui/material";
-import { useAuthStore } from "./AuthStore";
 import { styled } from "@mui/system";
 import { useTranslation } from "react-i18next";
 
@@ -8,7 +7,7 @@ import { otherColors } from "../theme";
 import { useAuthContext } from "./AuthStore";
 
 const paperStyle = {
-  bgcolor: "background.otherBackground",
+  background: otherColors.primaryMain,
   color: "#FFFFFF",
   borderRadius: 0,
   width: "100vw",
@@ -65,7 +64,7 @@ function Footer() {
     <NonMobileBox>
       <footer>
         <Box sx={{ flexGrow: 1 }}>
-          <Paper sx={{ ...paperStyle, bgcolor: otherColors.otherBackground }}>
+          <Paper sx={{ ...paperStyle }}>
             <Box sx={{ ml: 2 }}>{login ? getUserTypography() : "-"}</Box>
           </Paper>
         </Box>

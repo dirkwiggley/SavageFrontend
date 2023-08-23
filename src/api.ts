@@ -340,6 +340,32 @@ export default class API {
     }
   }
 
+  static createCampaign = async (campaignInfo: CampaignInterface) => {
+    const response = await axios.post(
+      `${CONFIG.baseDbURL}/campaigns/`,
+      { campaignInfo: campaignInfo },
+      { withCredentials: true }
+    );
+    if (response.status === 204) {
+      return SUCCESS;
+    } else {
+      return FAIL;
+    }
+  };
+
+  static updateCampaign = async (campaignInfo: CampaignInterface) => {
+    const response = await axios.put(
+      `${CONFIG.baseDbURL}/campaigns/`,
+      { campaignInfo: campaignInfo },
+      { withCredentials: true }
+    );
+    if (response.status === 204) {
+      return SUCCESS;
+    } else {
+      return FAIL;
+    }
+  };
+
   static sendWSMsg = (fromUserId: number, toUserId: number, message: string) => {
     return axios.post(
       `${CONFIG.baseDbURL}/trackers/sendmessage`,

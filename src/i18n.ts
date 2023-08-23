@@ -44,7 +44,7 @@ i18n
           home: {
             head: "Savage Worlds",
             body1:
-              "Savage Worlds is the core ruleset for all of Pinnacle’s roleplaying games. ",
+              "",
             body2:
               "This game references the Savage Worlds game system, available from Pinnacle Entertainment Group at www.peginc.com. Savage Worlds and all associated logos and trademarks are copyrights of Pinnacle Entertainment Group. Used with permission. Pinnacle makes no representation or warranty as to the quality, viability, or suitability for purpose of this product.",
             action: "Learn More",
@@ -58,6 +58,12 @@ i18n
             selecttable: "Select Table",
             exportdb: "Export DB",
             none: "None",
+            newValue: "New Value",
+            addNewRow: "Add new row",
+            deleteRow: "Delete this row",
+            createTable: "Create Table",
+            tableName: "Enter the name of the table and one column name that you would like to create.",
+            cancel: "Cancel",
           },
           profile: {
             profile: "Profile",
@@ -98,6 +104,8 @@ i18n
             players: "Players",
             update: "Update",
             copy: "Copy",
+            success: "Success",
+            dataerror: "Error: Bad campaign data",
           },
           footer: {
             user: "User",
@@ -146,6 +154,12 @@ i18n
             selecttable: "Wählen Sie Tabelle aus",
             exportdb: "DB exportieren",
             none: "Keiner",
+            newValue: "Neuer Wert",
+            addNewRow: "Neue Zeile hinzufügen",
+            deleteRow: "Löschen Sie diese Zeile",
+            createTable: "Tabelle erstellen",
+            tableName: "Geben Sie den Namen der Tabelle und einen Spaltennamen ein, die Sie erstellen möchten.",
+            cancel: "Stornieren",
           },
           profile: {
             profile: "Profil",
@@ -221,6 +235,12 @@ i18n
             selecttable: "Selecione a tabela",
             exportdb: "Exportar banco de dados",
             none: "Nenhum",
+            newValue: "Novo valor",
+            addNewRow: "Adicionar nova linha",
+            deleteRow: "Excluir esta linha",
+            createTable: "Criar a tabela",
+            tableName: "Digite o nome da tabela e um nome de coluna que você gostaria de criar.",
+            cancel: "Cancelar",
           },
           profile: {
             profile: "Perfil",

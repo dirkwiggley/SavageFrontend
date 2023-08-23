@@ -4,6 +4,7 @@ import { TextField, Tooltip, Box, Menu, MenuItem, Alert, AlertColor, Snackbar } 
 import { styled } from "@mui/system";
 
 import { CurrentSelection } from "./DBEditor";
+import { useTranslation } from "react-i18next";
 
 const StyledBox = styled(Box, {
   name: "StyledBox",
@@ -76,6 +77,8 @@ function DBEMenu({
   addNewRow = null,
   removeRow = null,
 }: Props) {
+  const { t, i18n } = useTranslation();
+  
   const [updateItem] = useState<Function>(ui);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null | undefined>(anchorElement);
   const [xPos] = useState<number>(x);
@@ -129,10 +132,6 @@ function DBEMenu({
         }}
         id="addremove"
         anchorEl={anchorEl}
-        // anchorPosition={{
-        //   top: xPos,
-        //   left: yPos,
-        // }}
         anchorOrigin={{
           vertical: "top",
           horizontal: "center",
@@ -145,8 +144,8 @@ function DBEMenu({
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => anr()}>Add new row</MenuItem>
-        <MenuItem onClick={() => rr()}>Delete this row</MenuItem>
+        <MenuItem onClick={() => anr()}>{t('dbeditor.addNewRow')}</MenuItem>
+        <MenuItem onClick={() => rr()}>{t('dbmenu.deleteRow')}</MenuItem>
       </Menu>
     );
   };
@@ -254,7 +253,7 @@ function DBEMenu({
             <TextField
               sx={{ zIndex: "100", backgroundColor: "white" }}
               id="outlined-basic"
-              label="New Value"
+              label={t('dbeditor.newValue')}
               variant="outlined"
               defaultValue={currentSelection.value}
               onKeyUp={(e) => textEntered(e as React.KeyboardEvent<HTMLInputElement>)}
@@ -294,7 +293,7 @@ function DBEMenu({
 
   const getSnackbar = () => {
     return (
-      <Snackbar anchorOrigin={{ "vertical": "top", "horizontal": "center" }} open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+      <Snackbar anchorOrigin={{ "vertical": "top", "horizontal": "center" }} open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
         <Alert onClose={handleCloseSnackbar} severity={snackbarType} sx={{ width: '100%' }}>{snackbarMsg}</Alert>
       </Snackbar>
     );
