@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import API from '../api';
 import { useAuthContext, instanceofUserInfo, convertToUserInfo, defaultUserInfo } from './AuthStore';
 import { UserInterface } from "../types";
+import { otherColors } from '../theme';
 
 const StyledGrid = styled(Grid, {
   name: "StyledGrid",
@@ -25,7 +26,7 @@ const StyledPaper = styled(Paper, {
   minHeight: "22vh",
   padding: "50px",
   borderRadius: "20px",
-  background: "rgba(255,255,255,1.0)",//"transparent",
+  background: otherColors.primaryMain,
   backdropFilter: "blur(15px)",
 });
 
@@ -126,6 +127,17 @@ function Login() {
       });
   }
 
+  const style = {
+    "& label.Mui-focused": {
+      color: "black"
+    },
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused fieldset": {
+        borderColor: "black"
+      }
+    }
+  }
+
   const out = show ?
   (
     <Grid container spacing={0} justifyContent="center" direction="row" >
@@ -154,7 +166,9 @@ function Login() {
                       onClick={clickEvent}
                       onChange={changeLogin}
                       required
-                      autoFocus={true} />
+                      autoFocus={true}
+                      sx={style}
+                    />
                   </Grid>
                   <Grid item>
                     <TextField
@@ -165,14 +179,16 @@ function Login() {
                       value={password}
                       onClick={clickEvent}
                       onChange={changePassword}
-                      required />
+                      required 
+                      sx={style}
+                    />
                   </Grid>
                   <Grid item>
                     <Button
                       variant="contained"
-                      color="primary"
+                      // color="primary"
                       type="submit"
-                      sx={{ width: "100%", bgcolor: "background.otherBackground" }} >{t('login.submit')}</Button>
+                      sx={{ width: "100%", bgcolor: otherColors.primaryLight }} >{t('login.submit')}</Button>
                   </Grid>
                 </Grid>
               </form>

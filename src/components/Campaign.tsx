@@ -1,5 +1,5 @@
-import React, { ReactElement, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { ReactElement, useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   FormControl,
   Box,
@@ -18,21 +18,20 @@ import {
   TooltipProps,
   tooltipClasses,
   Grid,
-} from "@mui/material";
-import { makeStyles, styled } from '@mui/material/styles';
-import { useTranslation } from "react-i18next";
+} from "@mui/material"
+import { styled } from '@mui/material/styles'
+import { useTranslation } from "react-i18next"
 
-import { useAuthContext } from "./AuthStore";
-import API, { authHelper, isUserInterface } from '../api';
+import { useAuthContext } from "./AuthStore"
+import API, { authHelper, isUserInterface } from '../api'
 import { UserInterface } from "../types";
-import { AlertColor } from '@mui/material/Alert';
-import { MobileBox, NonMobileBox } from './MobileBox';
-import { otherColors as oColors } from "../theme";
-import { JsxElement } from 'typescript';
-import { bgcolor } from '@mui/system';
+import { AlertColor } from '@mui/material/Alert'
+import { MobileBox, NonMobileBox } from './MobileBox'
+import { otherColors as oColors, otherColors } from "../theme"
 
 export interface PlayerInterface {
-  id: number;
+  id: number; // When dealing with a User
+  playerid?: number; // When dealing with a player
   nickname: string;
 }
 
@@ -41,7 +40,7 @@ const StackItem = styled(Box)(({ theme }) => ({
   padding: theme.spacing(1),
   textAlign: 'left',
   or: theme.palette.text.secondary,
-}));
+}))
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   backgroundColor: oColors.primaryMain,
@@ -54,27 +53,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
       'arial',
     ].join(','),
   },
-}));
-
-const StyledBox = styled(Box, {
-  name: "StyledBox",
-  slot: "Wrapper",
-})({
-  zIndex: "100",
-  fontSize: "14px",
-  backgroundColor: "#fff",
-  borderRadius: "2px",
-  padding: "5px 0 5px 0",
-  width: "150px",
-  height: "auto",
-  margin: "0",
-  /* use absolute positioning  */
-  position: "absolute",
-  listStyle: "none",
-  boxShadow: "0 0 20px 0 #ccc",
-  opacity: "1",
-  // transition: "opacity 0.5s linear",
-});
+}))
 
 const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -86,7 +65,7 @@ const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
     fontSize: theme.typography.pxToRem(12),
     border: '1px solid #000000',
   },
-}));
+}))
 
 export interface CampaignInterface {
   id: number,
@@ -100,92 +79,91 @@ export interface CampaignInterface {
 }
 
 const Users = () => {
-  const { t, i18n } = useTranslation();
-  const inputRef = useRef(null);
+  const { t, i18n } = useTranslation()
+  const inputRef = useRef(null)
   
-  const [auth] = useAuthContext();
-  const [users, setUsers] = useState<Array<PlayerInterface>>([]);
-  const [userIds, setUserIds] = useState<Array<number>>([]);
+  const [auth] = useAuthContext()
+  const [users, setUsers] = useState<Array<PlayerInterface>>([])
+  const [userIds, setUserIds] = useState<Array<number>>([])
   const [campaigns, setCampaigns] = useState<Array<CampaignInterface>>([])
-  const [campaignId, setCampaignId] = useState<number>(0);
-  const [campaignName, setCampaignName] = useState("");
-  const [ownerId, setOwnerId] = useState(0);
-  const [ownerNickname, setOwnerNickname] = useState("");
-  const [hindrances, setHindrances] = useState(0);
-  const [attributes, setAttributes] = useState(0);
-  const [skills, setSkills] = useState(0);
-  const [players, setPlayers] = useState<Array<PlayerInterface> | undefined>([]);
-  const [playerIds, setPlayerIds] = useState<Array<number>>([]);
-  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
-  const [snackbarType, setSnackbarType] = useState<AlertColor>("error");
-  const [snackbarMsg, setSnackbarMsg] = useState<string>("");
-  const [showCampaignNameDlg, setShowCampaignNameDlg] = useState<boolean>(false);
+  const [campaignId, setCampaignId] = useState<number>(0)
+  const [campaignName, setCampaignName] = useState("")
+  const [ownerId, setOwnerId] = useState(0)
+  const [ownerNickname, setOwnerNickname] = useState("")
+  const [hindrances, setHindrances] = useState(0)
+  const [attributes, setAttributes] = useState(0)
+  const [skills, setSkills] = useState(0)
+  const [players, setPlayers] = useState<Array<PlayerInterface> | undefined>([])
+  const [playerIds, setPlayerIds] = useState<Array<number>>([])
+  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
+  const [snackbarType, setSnackbarType] = useState<AlertColor>("error")
+  const [snackbarMsg, setSnackbarMsg] = useState<string>("")
+  const [showCampaignNameInput, setShowCampaignNameInput] = useState<boolean>(false)
 
-  let navigate = useNavigate();
+  let navigate = useNavigate()
+  const ADD_NEW = -1
   
   function isUserArray(obj: any): obj is Array<UserInterface> {
     if (Array.isArray(obj) && (obj.length === 0 || isUserInterface(obj[0])))
-      return true;
-    return false;
+      return true
+    return false
   }
 
   const copyPlayerIds = (players: Array<PlayerInterface>) => {
-    const newPlayerIds:number[] = [];
+    const newPlayerIds:number[] = []
     players.forEach(player => {
-      newPlayerIds.push(player.id);
+      newPlayerIds.push(player.playerid ? player.playerid : player.id)
     });
-    setPlayerIds(newPlayerIds);
+    setPlayerIds(newPlayerIds)
   }
 
-  useEffect(() => {
+  const getCampaigns = (alternateCampaignName?: string) => {
     authHelper(API.getCampaigns).then(response => {
       if (API.isCampaignArray(response)) {
         setCampaigns(response);
         response.forEach(campaign => {
-          if (campaign.name === "SWADE") {
-            setCampaignId(campaign.id);
-            setCampaignName(campaign.name);
-            setOwnerId(campaign.ownerid);
-            setOwnerNickname(campaign.ownernickname);
-            setHindrances(campaign.hindrances);
-            setAttributes(campaign.attributes);
-            setSkills(campaign.skills);
+          if (campaign.name === alternateCampaignName ? alternateCampaignName : campaignName) {
+            setCampaignId(campaign.id)
+            setCampaignName(campaign.name)
+            setOwnerId(campaign.ownerid)
+            setOwnerNickname(campaign.ownernickname)
+            setHindrances(campaign.hindrances)
+            setAttributes(campaign.attributes)
+            setSkills(campaign.skills)
             if (campaign.players) {
-              setPlayers(campaign.players);
-              copyPlayerIds(campaign.players);
+              setPlayers(campaign.players)
+              copyPlayerIds(campaign.players)
             } else {
-              setPlayers([]);
-              setPlayerIds([]);
+              setPlayers([])
+              setPlayerIds([])
             }
           }
         }
       )
     }})
-  }, []);
+  }
+
+  useEffect(() => {
+    getCampaigns("SWADE")
+  }, [])
 
   useEffect(() => {
     if (!auth || auth.login === "nobody") {
-      navigate("/login/true");
+      navigate("/login/true")
     }
-
-    const admin = auth ? auth.roles.includes('ADMIN') : false;
 
     authHelper(API.getUsers).then(response => {
       getUsers()
     }).catch(err => {
-      console.error(err);
+      console.error(err)
     });
-  }, [auth, navigate]);
-
-  const isAdmin = () => {
-    return auth ? auth.roles.includes('ADMIN') : false;
-  }
+  }, [auth, navigate])
 
   const getUsers = () => {
     authHelper(API.getUsers).then(response => {
       if (isUserArray(response)) {
-        const newUsers: Array<PlayerInterface> = [];
-        const newUserIds: Array<number> = [];
+        const newUsers: Array<PlayerInterface> = []
+        const newUserIds: Array<number> = []
         response.forEach(element => {
           const elem = {id: element.id, nickname: element.nickname };
           newUsers.push(elem);
@@ -221,38 +199,51 @@ const Users = () => {
 
   const handleSelectCampaign = (event: SelectChangeEvent<unknown>) => {
     const selectedId: number= event.target.value as number;
-    const ADD = -1;
     setCampaignId(selectedId);
-    if (selectedId === ADD) {
+    if (selectedId === ADD_NEW) {
       resetCampaign();
-      setShowCampaignNameDlg(true);
+      setCampaignName("New Campaign");
+      setShowCampaignNameInput(true);
     } else {
       authHelper(() => API.getCampaignById(Number(selectedId)))
         .then(response => {
-          setCampaignId(response.id);
-          setCampaignName(response.campaignname);
-          setOwnerId(response.ownerid);
-          setOwnerNickname(response.ownernickname);
-          setHindrances(response.hindrances);
-          setAttributes(response.attributes);
-          setSkills(response.skills);
-          setPlayers(response.players);
-          copyPlayerIds(response.players);
+          setCampaignId(response.data.id)
+          setCampaignName(response.data.name)
+          setOwnerId(response.data.ownerid)
+          setOwnerNickname(response.data.ownernickname)
+          setHindrances(response.data.hindrances)
+          setAttributes(response.data.attributes)
+          setSkills(response.data.skills)
+          setPlayers(response.data.players)
+          copyPlayerIds(response.data.players)
         }).catch(err => {
-          setSnackbarType("error");
-          const msg = t('campaign.dataerror');
-          setSnackbarMsg(msg);
-          setOpenSnackbar(true);
-          resetCampaign();
+          setSnackbarType("error")
+          const msg = t('campaign.dataerror')
+          setSnackbarMsg(msg)
+          setOpenSnackbar(true)
+          resetCampaign()
         });
     }
   }
 
-  const handleCloseNameDlg = () => {
-    setShowCampaignNameDlg(false);
+  const getCleanPlayers = (): PlayerInterface[] => {
+    const cleanPlayers: PlayerInterface[] = []
+    if (players) {
+      players.forEach(player => {
+        const id = player.playerid ? player.playerid : player.id
+        const user = users.find(user => user.id === id)
+        let nickname = "default"
+        if (user) {
+          nickname = user.nickname
+        }
+        cleanPlayers.push({id: id, nickname: nickname})
+      });
+    }
+    return cleanPlayers
   }
 
   const handleUpdate = () => {
+    const cleanPlayers = getCleanPlayers()
     let campaignInfo: CampaignInterface = {
       id: campaignId, 
       name: campaignName, 
@@ -261,26 +252,45 @@ const Users = () => {
       hindrances: hindrances, 
       attributes:attributes,
       skills: skills,
-      players: players
+      players: cleanPlayers
     }
-    authHelper(() => API.createCampaign(campaignInfo))
+    if (campaignId === ADD_NEW) {
+      authHelper(() => API.createCampaign(campaignInfo))
       .then(response => {
         setSnackbarType("success");
         const msg = t('campaign.success');
         setSnackbarMsg(msg);
         setOpenSnackbar(true);
         resetCampaign();
-    }).catch(error => {
+        setShowCampaignNameInput(false);
+        getCampaigns();
+      }).catch(error => {
+          setSnackbarType("error");
+          const msg = t('campaign.dataerror');
+          setSnackbarMsg(msg);
+          setOpenSnackbar(true);
+          resetCampaign();
+      })
+    } else {
+      authHelper(() => API.updateCampaign(campaignInfo))
+      .then(response => {
+        setSnackbarType("success");
+        const msg = t('campaign.success');
+        setSnackbarMsg(msg);
+        setOpenSnackbar(true);
+        setShowCampaignNameInput(false);
+        getCampaigns();
+      }).catch(error => {
         setSnackbarType("error");
         const msg = t('campaign.dataerror');
         setSnackbarMsg(msg);
         setOpenSnackbar(true);
         resetCampaign();
-    })
+    })}
   }
 
-  const getCampaigns = () => {
-    const camps: Array<ReactElement<any, any>> = [<MenuItem key="addNew" value={-1}>Add New</MenuItem>];
+  const getCampaignItems = () => {
+    const camps: Array<ReactElement<any, any>> = [<MenuItem key="addNew" value={ADD_NEW}>Add New</MenuItem>];
     campaigns.forEach(campaign => {
       camps.push(<MenuItem key={campaign.id} value={campaign.id}>{campaign.name}</MenuItem>);
     });
@@ -351,22 +361,33 @@ const Users = () => {
     );
   }
 
+  const isASCII = (str: string) => {
+    return /^[\x00-\x7F]*$/.test(str);
+  }
+
   const textEntered = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const value = (e.target as HTMLInputElement).value;
     if (e.key === "Escape") {
-      setShowCampaignNameDlg(false);
-      // updateItem(null);
+      setCampaignName("SWADE");
+      const swadeId = campaigns.find(campaign => campaign.name === "SWADE");
+      if (swadeId) {
+        setCampaignId(swadeId.id);
+        setPlayerIds([]);
+        setPlayers([]);
+      }
+      setShowCampaignNameInput(false);
     } else if (e.key === "Enter") {
-      setCampaignId(-1);
-      const campaignName = (e.target as HTMLInputElement).value;
+      setCampaignId(ADD_NEW);
+      const campaignName = value;
       setCampaignName(campaignName);
       const newOwnerId = auth ? auth.id : 0;
       setOwnerId(newOwnerId);
       const ownerNickname = auth ? auth.nickname : "";
       setOwnerNickname(ownerNickname);
-      setShowCampaignNameDlg(false);
-      const newCampaign: CampaignInterface = {id: -1, name: campaignName, ownerid: ownerId, ownernickname: ownerNickname, attributes: attributes, hindrances: hindrances, skills: skills};
-      const newCampaigns = [ ...campaigns, newCampaign ];
-      setCampaigns(newCampaigns);
+    } else if (e.key === "Backspace") {
+      if (value.length > 0) setCampaignName(value.substring(0, value.length-1));
+    } else if (e.key.length === 1 && isASCII(value+e.key)) {
+      setCampaignName(value+e.key);
     }
   };
 
@@ -374,32 +395,39 @@ const Users = () => {
     e.stopPropagation();
   };
 
-  const createCampaignNameInput = () => {
-    return (
-      <StyledBox
-        sx={{
-          input: {color: "black"}, backgroundColor: oColors.otherBackground
-        }}
-      >
+  const getCampaignNameElement = () => {
+    if (showCampaignNameInput) {
+      return (
         <CustomTooltip title="While selected escape to close">
           <TextField
-            sx={{ zIndex: "100"}}
-            id="outlined-basic"
-            label={t('dbeditor.newValue')}
-            InputLabelProps={{
-              sx: { color: "black", "&.Mui-focused": { color: "black" } },
-            }}
-            variant="standard"
-            defaultValue={""}
+            id="campaignNameInput"
+            label={t('campaign.campaignname')}
+            InputLabelProps={{ shrink: true }}
+            autoComplete="off"
+            value={campaignName}
             onKeyUp={(e) => textEntered(e as React.KeyboardEvent<HTMLInputElement>)}
             onClick={(e) => editorClicked(e)}
-            inputRef={input => input && input.focus()}
             autoFocus
           />
         </CustomTooltip>
-      </StyledBox>
-    );
-  };
+      );
+    } else {
+      return (
+        <>
+          <InputLabel id="select-label">{t('campaign.selectcampaign')}</InputLabel>
+          <Select
+            ref={inputRef}
+            labelId="select-label"
+            id="select-campaign"
+            value={campaigns?.length > 0 ? campaignId : ""}
+            onChange={(evt) => handleSelectCampaign(evt)}
+          >
+            {getCampaignItems()}
+          </Select>
+        </>        
+      )
+    }
+  }
 
   const getGenericPage = () => {
     return (
@@ -417,17 +445,7 @@ const Users = () => {
             <StackItem><Typography variant="h5" component="span" sx={{ mr: 2 }}>{t('campaign.title')}</Typography></StackItem>
             <StackItem>
               <FormControl variant="filled" fullWidth>
-                {showCampaignNameDlg ? createCampaignNameInput() : null}
-                <InputLabel id="select-label">{t('campaign.selectcampaign')}</InputLabel>
-                <Select
-                  ref={inputRef}
-                  labelId="select-label"
-                  id="select-campaign"
-                  value={campaigns?.length > 0 ? campaignId : ""}
-                  onChange={(evt) => handleSelectCampaign(evt)}
-                >
-                  {getCampaigns()}
-                </Select>
+                {getCampaignNameElement()}
               </FormControl>
             </StackItem>
             <StackItem>
@@ -450,6 +468,7 @@ const Users = () => {
                   InputLabelProps={{ shrink: true }}
                   autoComplete="off"
                   value={hindrances}
+                  disabled={campaignName==="SWADE"}
                   onChange={(evt) => handleInputChange(evt, "hindrances")} />
               </FormControl>
             </StackItem>
@@ -461,6 +480,7 @@ const Users = () => {
                   InputLabelProps={{ shrink: true }}
                   autoComplete="off"
                   value={attributes}
+                  disabled={campaignName==="SWADE"}
                   onChange={(evt) => handleInputChange(evt, "attributes")} />
               </FormControl>
             </StackItem>
@@ -472,6 +492,7 @@ const Users = () => {
                   InputLabelProps={{ shrink: true }}
                   autoComplete="off"
                   value={skills}
+                  disabled={campaignName==="SWADE"}
                   onChange={(evt) => handleInputChange(evt, "skills")} />
               </FormControl>
             </StackItem>
@@ -484,6 +505,7 @@ const Users = () => {
                   multiple={true}
                   variant="filled"
                   value={playerIds}
+                  disabled={campaignName==="SWADE"}
                   native
                   >
                     {userIds.map(userId => (
@@ -495,8 +517,7 @@ const Users = () => {
               </FormControl>
             </StackItem>
             <StackItem>
-                {/* <Button variant="contained" sx={{ width: "40%", ml: 1, mr: 1, display: "inline-flex", flexDirection: "row" }} onClick={handleCopy}>{t('campaign.copy')}</Button> */}
-                <Button disabled={campaignName==="SWADE"} variant="contained" sx={{ width: "100%", bgcolor: "rgba(230, 200, 160, 1.0)" }} onClick={handleUpdate}>{t('campaign.update')}</Button>
+                <Button disabled={campaignName==="SWADE"} variant="contained" sx={{ width: "100%", bgcolor: otherColors.primaryLight }} onClick={handleUpdate}>{t('campaign.save')}</Button>
             </StackItem>
           </Stack>
         </StyledPaper>

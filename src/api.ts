@@ -290,14 +290,14 @@ export default class API {
 
   static getCampaignById = async (campaignId: number) => {
     return await axios.get(
-      `${CONFIG.baseDbURL}/campaign/id/${campaignId}`,
+      `${CONFIG.baseDbURL}/campaigns/id/${campaignId}`,
       { withCredentials: true }
     );
   }
 
   static getCampaignByName = async (campaignName: string) => {
     return await axios.get(
-      `${CONFIG.baseDbURL}/campaign/name/${campaignName}`,
+      `${CONFIG.baseDbURL}/campaigns/name/${campaignName}`,
       { withCredentials: true }
     );
   }

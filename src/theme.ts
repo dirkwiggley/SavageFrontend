@@ -45,6 +45,7 @@ export const otherColors = {
       veryLight: "rgba(230, 200, 160, 1.0)",
       otherBackground: "#D2B48C",
       paperColor: "#99d6ff",
+      black: "rgba(255, 255, 255, 1.0)",
     //   darkerBlue: "#0AA1DD",
     //   lightBlue: "#79DAE8",
     //   lightestBlue: "#E8F9FD",

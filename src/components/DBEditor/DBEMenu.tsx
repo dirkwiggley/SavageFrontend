@@ -145,7 +145,7 @@ function DBEMenu({
         onClose={handleClose}
       >
         <MenuItem onClick={() => anr()}>{t('dbeditor.addNewRow')}</MenuItem>
-        <MenuItem onClick={() => rr()}>{t('dbmenu.deleteRow')}</MenuItem>
+        <MenuItem onClick={() => rr()}>{t('dbeditor.deleteRow')}</MenuItem>
       </Menu>
     );
   };
@@ -229,7 +229,6 @@ function DBEMenu({
         currentSelection.id,
         currentSelection.columnName,
         (e.target as HTMLInputElement).value
-        // e.currentTarget.value
       );
     }
   };

@@ -30,6 +30,7 @@ import { useAuthContext } from '../AuthStore';
 import { TablePaginationActions } from "./TablePaginationActions";
 import ExportTablesButtons from "./ExportTablesButtons";
 import API, { authHelper } from "../../api";
+import { otherColors } from "../../theme";
 
 export interface CurrentSelection {
   id: string,
@@ -73,6 +74,8 @@ type SupportedLocales = keyof typeof locales;
 
 export default function CustomPaginationActionsTable() {
   const { t, i18n } = useTranslation();
+  
+  const [anchorEl, setAnchorEl] = React.useState()
 
   const [auth, setAuth] = useAuthContext();
 
@@ -92,6 +95,7 @@ export default function CustomPaginationActionsTable() {
   const [showDBEMenu, setShowDBEMenu] = useState<boolean>(false);
   const [currentSelection, setCurrentSelection] = useState<CurrentSelection>(currentSelectionSeed);
   const [updateTable, setUpdateTable] = useState<boolean>(false);
+  
 
   let navigate = useNavigate();
 
@@ -228,11 +232,11 @@ export default function CustomPaginationActionsTable() {
                   scope="row"
                   key={index}
                   sx={{
-                    bgcolor: "rgba(210, 180, 140, 1.0)",
+                    bgcolor: otherColors.primaryMain, //"rgba(210, 180, 140, 1.0)",
                     border: "2px",
                     "&:hover": {
                       cursor: "pointer",
-                      backgroundColor: "rgba(217, 189, 176, 1.0)",
+                      backgroundColor: otherColors.primaryLight,
                     },
                   }}
 
@@ -566,7 +570,7 @@ export default function CustomPaginationActionsTable() {
                     <TableRow>{columnHeaders}</TableRow>
                     {hasNoRows() && (
                       <TableRow style={{ height: 53 * getEmptyRows() }}>
-                        <TableCell colSpan={6}>
+                        <TableCell colSpan={columnHeaders.length}>
                           No data in table{" "}
                           <Button onClick={createDBRow} variant="text">
                             Create a row
@@ -585,12 +589,12 @@ export default function CustomPaginationActionsTable() {
 
                     {getEmptyRows() > 0 && (
                       <TableRow style={{ height: 53 * getEmptyRows() }}>
-                        <TableCell colSpan={6} />
+                        <TableCell colSpan={columnHeaders.length} />
                       </TableRow>
                     )}
                   </TableBody>
-                  <TableFooter>
-                    <TableRow>
+                  <TableFooter sx={{ width: "100%" }}>
+                    <TableRow sx={{ width: "100%" }}>
                       <TablePagination
                         sx={{ width: "100%" }}
                         rowsPerPageOptions={[
@@ -599,7 +603,7 @@ export default function CustomPaginationActionsTable() {
                           25,
                           { label: "All", value: -1 },
                         ]}
-                        colSpan={3}
+                        colSpan={columnHeaders.length}
                         count={rows.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
@@ -703,7 +707,7 @@ export default function CustomPaginationActionsTable() {
                     <TableRow>{columnHeaders}</TableRow>
                     {hasNoRows() && (
                       <TableRow style={{ height: 53 * getEmptyRows() }}>
-                        <TableCell colSpan={6}>
+                        <TableCell colSpan={columnHeaders.length}>
                           No data in table
                           <Button onClick={createDBRow} variant="text">
                             Create a row
@@ -722,7 +726,7 @@ export default function CustomPaginationActionsTable() {
 
                     {getEmptyRows() > 0 && (
                       <TableRow style={{ height: 53 * getEmptyRows() }}>
-                        <TableCell colSpan={6} />
+                        <TableCell colSpan={columnHeaders.length} />
                       </TableRow>
                     )}
                   </TableBody>
@@ -736,7 +740,7 @@ export default function CustomPaginationActionsTable() {
                           25,
                           { label: "All", value: -1 },
                         ]}
-                        colSpan={3}
+                        colSpan={columnHeaders.length}
                         count={rows.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
