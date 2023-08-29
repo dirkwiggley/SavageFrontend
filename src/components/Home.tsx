@@ -5,19 +5,12 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Grid2 from "@mui/material/Unstable_Grid2";
 
 import { useTranslation, Trans } from "react-i18next";
 
 import { useState, useEffect, MouseEvent } from "react";
 import { useAuthContext } from "./AuthStore";
 import Grid from "@mui/material/Grid";
-import { bgcolor } from "@mui/system";
-
-const lngs: any = {
-  en: { nativeName: 'English' },
-  de: { nativeName: 'Deutsch' }
-};
 
 function Home() {
   const { t, i18n } = useTranslation();

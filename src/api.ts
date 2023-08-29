@@ -1,7 +1,7 @@
 import axios from "axios";
 import CONFIG from "./config";
 import { UserInterface } from "./types";
-import { CampaignInterface } from "./components/Campaign";
+import { CampaignInterface } from "./components/EditCampaign";
 // import { refreshTokenIsString } from "./components/AuthStore";
 
 const axiosJWT = axios.create();

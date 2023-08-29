@@ -49,6 +49,18 @@ i18n
               "This game references the Savage Worlds game system, available from Pinnacle Entertainment Group at www.peginc.com. Savage Worlds and all associated logos and trademarks are copyrights of Pinnacle Entertainment Group. Used with permission. Pinnacle makes no representation or warranty as to the quality, viability, or suitability for purpose of this product.",
             action: "Learn More",
           },
+          about: {
+            head_rules: "Basic Rules",
+            head_combat: "Basic Combat",
+            head_creation: "Basic Character Creation",
+            body_rules:
+              "The basic game rules for Savage Worlds",
+            body_combat:
+              "Instructions on the basics of combat in Savage Worlds",
+            body_creation:
+              "Character creation simplified for Savage Worlds",
+              action: "Next",
+          },
           locales: {
             locale: "Locale",
             test: "This is a test",
@@ -146,6 +158,17 @@ i18n
               "Dieses Spiel bezieht sich auf das Spielsystem Savage Worlds, erhältlich bei der Pinnacle Entertainment Group unter www.peginc.com. Savage Worlds und alle damit verbundenen Logos und Marken unterliegen dem Urheberrecht der Pinnacle Entertainment Group. Mit Genehmigung verwendet. Pinnacle gibt keine Zusicherungen oder Garantien hinsichtlich der Qualität, Brauchbarkeit oder Eignung für den Zweck dieses Produkts.",
             action: "Weitere Informationen",
           },
+          about: {
+            head_rules: "Grundregeln",
+            head_combat: "Grundlegender Kampf",
+            head_creation: "Grundlegende Charaktererstellung",
+            body_rules: 
+              "Die grundlegenden Spielregeln für Savage Worlds",
+            body_combat: 
+              "Anleitung zu den Grundlagen des Kampfes in Savage Worlds",
+            body_creation: "Vereinfachte Charaktererstellung für Savage Worlds",
+            action: "Nächste",
+          },
           locales: {
             locale: "Gebietsschema",
             test: "Das ist ein Test",
@@ -226,6 +249,17 @@ i18n
             body2:
               "Este jogo faz referência ao sistema de jogo Savage Worlds, disponível no Pinnacle Entertainment Group em www.peginc.com. Savage Worlds e todos os logotipos e marcas comerciais associados são direitos autorais da Pinnacle Entertainment Group. Usado com permissão. A Pinnacle não faz nenhuma representação ou garantia quanto à qualidade, viabilidade ou adequação para a finalidade deste produto.",
             action: "Saber mais",
+          },
+          about: {
+            head_rules: "Regras básicas",
+            head_combat: "Combate Básico",
+            head_creation: "Criação Básica de Personagem",
+            body_rules:
+              "As regras básicas do jogo para Savage Worlds",
+            body_combat:
+              "Instruções sobre os fundamentos do combate em Savage Worlds",
+            body_creation: "Criação de personagem simplificada para Savage Worlds",
+            action: "Próximo",
           },
           locales: {
             locale: "Localidade",

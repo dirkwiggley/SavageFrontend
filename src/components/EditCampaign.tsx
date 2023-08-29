@@ -78,7 +78,7 @@ export interface CampaignInterface {
   players?: Array<PlayerInterface>,
 }
 
-const Users = () => {
+const EditCampaign = () => {
   const { t, i18n } = useTranslation()
   const inputRef = useRef(null)
   
@@ -204,6 +204,10 @@ const Users = () => {
       resetCampaign();
       setCampaignName("New Campaign");
       setShowCampaignNameInput(true);
+      if (auth !== null) {
+        setOwnerId(auth.id);
+        setOwnerNickname(auth.nickname);
+      }
     } else {
       authHelper(() => API.getCampaignById(Number(selectedId)))
         .then(response => {
@@ -543,4 +547,4 @@ const Users = () => {
   );
 }
 
-export default Users;
+export default EditCampaign;
