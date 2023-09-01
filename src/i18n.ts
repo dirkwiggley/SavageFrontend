@@ -123,6 +123,7 @@ i18n
           footer: {
             user: "User",
             notloggedIn: "Not Logged In",
+            campaign: "Campaign",
           }
         },
       },
@@ -215,6 +216,7 @@ i18n
           footer: {
             user: "Benutzer",
             notloggedIn: "Nicht eingeloggt",
+            campaign: "Kampagne",
           }
         },          
       },
@@ -307,6 +309,7 @@ i18n
           footer: {
             user: "Do utilizador",
             notloggedIn: "Não logado",
+            campaign: "Campanha",
           }
         },
       },

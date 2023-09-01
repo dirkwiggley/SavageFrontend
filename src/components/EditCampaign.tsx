@@ -177,10 +177,10 @@ const EditCampaign = () => {
     });
   }
 
-  const resetCampaign = () => {
-    const defaultCampaign = campaigns.find(campaign => campaignName === "SWADE");
+  const resetCampaign = (newCampaign: boolean = false) => {
+    const defaultCampaign = campaigns.find(campaign => campaign.name === "SWADE");
     if (defaultCampaign) {
-      setCampaignId(defaultCampaign.id);
+      setCampaignId(newCampaign ? ADD_NEW : defaultCampaign.id);
       setCampaignName(defaultCampaign.name);
       setOwnerId(defaultCampaign.ownerid);
       setOwnerNickname(defaultCampaign.ownernickname);
@@ -199,9 +199,9 @@ const EditCampaign = () => {
 
   const handleSelectCampaign = (event: SelectChangeEvent<unknown>) => {
     const selectedId: number= event.target.value as number;
-    setCampaignId(selectedId);
     if (selectedId === ADD_NEW) {
-      resetCampaign();
+      const newCampaign = true;
+      resetCampaign(newCampaign);
       setCampaignName("New Campaign");
       setShowCampaignNameInput(true);
       if (auth !== null) {

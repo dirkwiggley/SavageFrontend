@@ -31,6 +31,7 @@ function Footer() {
 
   const [login, setLogin] = useState<string | null>(null);
   const [nickname, setNickname] = useState<string | null>(null);
+  const [campaignName, setCampaignName] = useState<string | null>(null);
 
   const { t, i18n } = useTranslation();
 
@@ -41,12 +42,17 @@ function Footer() {
         let nickname = auth.nickname;
         setLogin(login);
         setNickname(nickname);
+        if (auth.campaignname) {
+          setCampaignName(auth.campaignname);
+        } else {
+          setCampaignName(null);
+        }
       } catch (err) {
         console.error(err);
         setLogin(null);
         setNickname(null);
       }
-    } else if (auth === "") {
+    } else {
       setLogin("");
       setNickname("");
     }
@@ -55,6 +61,8 @@ function Footer() {
   const getUserTypography = () => {
     if (login === "nobody") {
       return <Typography variant="h6" component="span" sx={{ mr: 2 }}>{`${t('footer.notloggedIn')}`}</Typography>;
+    } else if (campaignName) {
+      return <Typography variant="h6" component="span" sx={{ mr: 2 }}>{`${t('footer.campaign')}: ${campaignName}`}</Typography>;
     } else {
       return <Typography variant="h6" component="span" sx={{ mr: 2 }}>{`${t('footer.user')}: ${login} (${nickname})`}</Typography>;
     }

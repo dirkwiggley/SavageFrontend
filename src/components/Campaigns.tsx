@@ -3,6 +3,8 @@ import { MobileBox, NonMobileBox } from "./MobileBox";
 import { otherColors as oColors } from "../theme";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import EditCampaign from "./EditCampaign";
+import SelectCampaign from "./SelectCampaign";
+
 import { useState } from "react";
 
 const StackItem = styled(Box)(({ theme }) => ({
@@ -13,6 +15,7 @@ const StackItem = styled(Box)(({ theme }) => ({
 }))
 
 const EDIT_CAMPAIGN = "editCampaign";
+const SELECT_CAMPAIGN = "selectCampaign";
 const NULL = "null";
 
 const Campaigns = () => {
@@ -22,15 +25,15 @@ const Campaigns = () => {
     const navigate = useNavigate();
 
     const editCampaigns = () => {
-        setBodyType(EDIT_CAMPAIGN);
+        setBodyType(EDIT_CAMPAIGN)
     }
 
     const nada = () => {
-        setBodyType(NULL);
+        setBodyType(NULL)
     }
 
     const selectCampaign = () => {
-
+        setBodyType(SELECT_CAMPAIGN)
     }
 
     const editDocuments = () => {
@@ -62,10 +65,10 @@ const Campaigns = () => {
         switch (bodyType) {
             case EDIT_CAMPAIGN:
                 return <EditCampaign />
-                break;
+            case SELECT_CAMPAIGN:
+                return <SelectCampaign />
             case NULL:
                 return null;
-                break;
             default:
                 return null;
         }
@@ -76,7 +79,7 @@ const Campaigns = () => {
             <MobileBox>
             </MobileBox>
             <NonMobileBox>
-                <Grid container>
+                <Grid container alignItems="center">
                     <Grid item xs={2}>{getButtons()}</Grid>
                     <Grid item xs={10}>{getBody()}</Grid>
                 </Grid>

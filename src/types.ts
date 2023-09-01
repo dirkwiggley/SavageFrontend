@@ -5,6 +5,8 @@ export interface UserInterface {
     nickname: string;
     email: string;
     roles: Array<string>;
+    campaignid?: number;
+    campaignname?: string;
     locale: string;
     active: boolean;
     resetpwd?: boolean;

@@ -53,16 +53,6 @@ export interface RoleType {
   name: string;
 }
 
-// export interface UserInterface {
-//   id: number;
-//   login: string;
-//   nickname: string;
-//   email: string;
-//   roles: string;
-//   active: number;
-//   resetpwd: number;
-// }
-
 export const isRole = (arg: any): arg is RoleType => {
   return (
     arg &&
@@ -115,6 +105,7 @@ export default class API {
 
   static logoutApi = (userId: number | undefined) => {
     if (!userId) return;
+    API.accessToken = null;
     return new Promise(function (resolve, reject) {
       axios.delete(`${CONFIG.baseDbURL}/auth/logout/${userId}`).catch((err) => {
         console.error(err);
