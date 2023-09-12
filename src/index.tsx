@@ -18,11 +18,11 @@ const StyledBox = styled(Box)({
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 root.render(
-  // <React.StrictMode>
+  <React.StrictMode>
   <StyledBox>
     <ThemeProvider theme={theme}>
       <App />
     </ThemeProvider>
   </StyledBox>
-  // </React.StrictMode>
+  </React.StrictMode>
 );

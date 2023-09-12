@@ -201,7 +201,8 @@ const SelectCampaign = () => {
   }
 
   const getCampaignItems = () => {
-    const camps: Array<ReactElement<any, any>> = [<MenuItem key="addNew" value={ADD_NEW}>Add New</MenuItem>];
+    // const camps: Array<ReactElement<any, any>> = [<MenuItem key="addNew" value={ADD_NEW}>Add New</MenuItem>];
+    const camps: Array<ReactElement<any, any>> = [];
     campaigns.forEach(campaign => {
       camps.push(<MenuItem key={campaign.id} value={campaign.id}>{campaign.name}</MenuItem>);
     });

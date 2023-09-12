@@ -2,6 +2,7 @@ import axios from "axios";
 import CONFIG from "./config";
 import { UserInterface } from "./types";
 import { CampaignInterface } from "./components/EditCampaign";
+import { DocumentListInterface, DocumentInterface } from "./components/EditDocMetaData";
 // import { refreshTokenIsString } from "./components/AuthStore";
 
 const axiosJWT = axios.create();
@@ -312,6 +313,22 @@ export default class API {
     return false;
   }
 
+  static isDocumentInterface = (obj:any) : obj is DocumentInterface => {
+    if (typeof obj.id === "number" &&
+        typeof obj.ownerid === "number" &&
+        typeof obj.campaignid === "number" &&
+        typeof obj.title === "string")
+          return true;
+    else
+      return false;
+  }
+
+  static isDocumentList(obj: any): obj is Array<DocumentListInterface> {
+    if (obj && Array.isArray(obj) && (obj.length === 0 || API.isDocumentInterface(obj[0])))
+      return true;
+    return false;
+  }
+
   static getCampaigns = async () => {
     try {
       const response = await axios.get(`${CONFIG.baseDbURL}/campaigns/`,
@@ -348,6 +365,62 @@ export default class API {
     const response = await axios.put(
       `${CONFIG.baseDbURL}/campaigns/`,
       { campaignInfo: campaignInfo },
+      { withCredentials: true }
+    );
+    if (response.status === 204) {
+      return SUCCESS;
+    } else {
+      return FAIL;
+    }
+  };
+
+  static getDocumentsList = async (campaignId: number) => {
+    const response = await axios.get(
+      `${CONFIG.baseDbURL}/documents/campaign/${campaignId}`,
+      { withCredentials: true }
+    );
+    if (!response?.data.error && this.isDocumentList(response.data)) {
+      return response.data;
+    }
+    if (response.status === 204) {
+      return SUCCESS;
+    } else {
+      return FAIL;
+    }
+  };
+
+  static getDocument = async (documentId: number) => {
+    const response = await axios.get(
+      `${CONFIG.baseDbURL}/documents/id/${documentId}`,
+      { withCredentials: true }
+    );
+    if (!response?.data.error && this.isDocumentInterface(response.data)) {
+      return response.data;
+    }
+    if (response.status === 204) {
+      return SUCCESS;
+    } else {
+      return FAIL;
+    }
+  };
+
+  static createDocument = async (documentInfo: DocumentInterface) => {
+    const response = await axios.post(
+      `${CONFIG.baseDbURL}/documents/`,
+      { documentInfo: documentInfo },
+      { withCredentials: true }
+    );
+    if (response.status === 204) {
+      return SUCCESS;
+    } else {
+      return FAIL;
+    }
+  };
+
+  static updateDocument = async (documentInfo: DocumentInterface) => {
+    const response = await axios.put(
+      `${CONFIG.baseDbURL}/documents/`,
+      { documentInfo: documentInfo },
       { withCredentials: true }
     );
     if (response.status === 204) {

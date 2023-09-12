@@ -120,6 +120,17 @@ i18n
             success: "Success",
             dataerror: "Error: Bad campaign data",
           },
+          documentmetadata: {
+            title: "Meta Data",
+            documenttitle: "Title",
+            description: "Description",
+            read: "Read Permissions",
+            write: "Write Permissions",
+            delete: "Delete Permissions",
+            success: "Success",
+            error: "Error",
+            save: "Save",
+          },
           footer: {
             user: "User",
             notloggedIn: "Not Logged In",

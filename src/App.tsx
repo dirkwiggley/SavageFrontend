@@ -12,6 +12,7 @@ import ResetPwd from "./components/ResetPwd";
 import DBEditor from "./components/DBEditor/DBEditor";
 import Locales from "./components/Locales";
 import Campaigns from "./components/Campaigns";
+import EditDocuments from './components/EditDocuments';
 import Exit from "./components/Exit";
 import Footer from "./components/Footer";
 import { AuthProvider } from './components/AuthStore';
@@ -36,6 +37,7 @@ function App() {
             <Route path="/locales" element={<Locales />} />
             <Route path="/campaigns" element={<Campaigns />} />
             <Route path="/editcampaign" element={<EditCampaign />} />
+            <Route path="/editdocs" element={<EditDocuments />} />
             <Route path="/exit" element={<Exit />} />
           </Routes>
           <Footer />

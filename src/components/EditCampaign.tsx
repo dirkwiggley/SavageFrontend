@@ -370,6 +370,7 @@ const EditCampaign = () => {
   }
 
   const textEntered = (e: React.KeyboardEvent<HTMLInputElement>) => {
+
     const value = (e.target as HTMLInputElement).value;
     if (e.key === "Escape") {
       setCampaignName("SWADE");
@@ -381,7 +382,7 @@ const EditCampaign = () => {
       }
       setShowCampaignNameInput(false);
     } else if (e.key === "Enter") {
-      setCampaignId(ADD_NEW);
+      // setCampaignId(ADD_NEW);
       const campaignName = value;
       setCampaignName(campaignName);
       const newOwnerId = auth ? auth.id : 0;

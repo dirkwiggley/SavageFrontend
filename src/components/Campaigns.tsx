@@ -4,8 +4,11 @@ import { otherColors as oColors } from "../theme";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import EditCampaign from "./EditCampaign";
 import SelectCampaign from "./SelectCampaign";
+import EditDocuments from "./EditDocuments";
 
 import { useState } from "react";
+import EditDocMetaData from "./EditDocMetaData";
+import { useAuthContext } from "./AuthStore";
 
 const StackItem = styled(Box)(({ theme }) => ({
     selected: oColors.paperColor,
@@ -14,13 +17,16 @@ const StackItem = styled(Box)(({ theme }) => ({
     or: theme.palette.text.secondary,
 }))
 
-const EDIT_CAMPAIGN = "editCampaign";
-const SELECT_CAMPAIGN = "selectCampaign";
+const EDIT_CAMPAIGN = "editCampaign"
+const SELECT_CAMPAIGN = "selectCampaign"
+const EDIT_DOCUMENTS = "editDocs"
+const EDIT_DOC_META_DATA = "editDocMetaData"
 const NULL = "null";
 
 const Campaigns = () => {
-    const [bodyType, setBodyType] = useState<string>("");
-    const [selectedCampaign, setSelectedCampaign] = useState<string>("");
+    const [auth, setAuth] = useAuthContext()
+    const [bodyType, setBodyType] = useState<string>("")
+    const [selectedCampaign, setSelectedCampaign] = useState<string>("")
     
     const navigate = useNavigate();
 
@@ -37,7 +43,11 @@ const Campaigns = () => {
     }
 
     const editDocuments = () => {
+        setBodyType(EDIT_DOCUMENTS)
+    }
 
+    const editDocMetaData = () => {
+        setBodyType(EDIT_DOC_META_DATA)
     }
 
     const viewDocuments = () => {
@@ -54,6 +64,7 @@ const Campaigns = () => {
             <Button variant="contained" sx={{mt: 1, mb: 1}} onClick={selectCampaign}><Typography color="black">Select Campaign</Typography></Button>
             <Button variant="contained" sx={{mt: 1, mb: 1}} onClick={editCampaigns}><Typography color="black">Edit Campaigns</Typography></Button>
             <Button variant="contained" sx={{mt: 1, mb: 1}} onClick={editDocuments}><Typography color="black">Edit Documents</Typography></Button>
+            <Button variant="contained" sx={{mt: 1, mb: 1}} onClick={editDocMetaData}><Typography color="black">Edit Meta Data</Typography></Button>
             <Button variant="contained" sx={{mt: 1, mb: 1}} onClick={viewDocuments}><Typography color="black">View Documents</Typography></Button>
             <Button variant="contained" sx={{mt: 1, mb: 1}} onClick={editCharacters}><Typography color="black">Edit Characters</Typography></Button>
             <Button variant="contained" sx={{mt: 1, mb: 1}} onClick={nada}><Typography color="black">Nothing</Typography></Button>
@@ -67,6 +78,11 @@ const Campaigns = () => {
                 return <EditCampaign />
             case SELECT_CAMPAIGN:
                 return <SelectCampaign />
+            case EDIT_DOCUMENTS:
+                return <EditDocuments />
+            case EDIT_DOC_META_DATA:
+                const campaignId = (auth && auth.campaignid) ? auth.campaignid : 0
+                return <EditDocMetaData campaignId={campaignId} documentId={1} />
             case NULL:
                 return null;
             default:
