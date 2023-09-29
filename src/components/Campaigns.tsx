@@ -4,11 +4,12 @@ import { otherColors as oColors } from "../theme";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import EditCampaign from "./EditCampaign";
 import SelectCampaign from "./SelectCampaign";
-import EditDocuments from "./EditDocuments";
+import DocEditor from "./TextEditor/DocEditor";
 
-import { useState } from "react";
-import EditDocMetaData from "./EditDocMetaData";
+import { useCallback, useState } from "react";
+import EditDocMetaData from "./TextEditor/EditDocMetaData";
 import { useAuthContext } from "./AuthStore";
+import { RemirrorJSON } from "remirror";
 
 const StackItem = styled(Box)(({ theme }) => ({
     selected: oColors.paperColor,
@@ -72,6 +73,12 @@ const Campaigns = () => {
         );
     }
 
+    const STORAGE_KEY = 'remirror-editor-content'
+    const handleEditorChange = (json: RemirrorJSON) => {
+        // Store the JSON in localstorage
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(json))
+    }
+        
     const getBody = () => {
         switch (bodyType) {
             case EDIT_CAMPAIGN:
@@ -79,7 +86,7 @@ const Campaigns = () => {
             case SELECT_CAMPAIGN:
                 return <SelectCampaign />
             case EDIT_DOCUMENTS:
-                return <EditDocuments />
+                return <DocEditor />
             case EDIT_DOC_META_DATA:
                 const campaignId = (auth && auth.campaignid) ? auth.campaignid : 0
                 return <EditDocMetaData campaignId={campaignId} documentId={1} />

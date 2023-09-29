@@ -24,6 +24,7 @@ export const theme = createTheme({
     // success: {
 
     // }
+    
   },
   typography: {
     fontFamily: [
@@ -40,6 +41,8 @@ export const otherColors = {
     //   medium: "#3BACB6",
     //   light: "#82DBD8",
       // otherBackground: "#2155CD",
+      transparent: "rgba(210, 180, 140, 0.0)",
+      primaryMainTransparent: "rgba(210, 180, 140, 0.4)",
       primaryMain: "rgba(210, 180, 140, 1.0)",
       primaryLight: "rgba(230, 200, 160, 1.0)",
       veryLight: "rgba(230, 200, 160, 1.0)",

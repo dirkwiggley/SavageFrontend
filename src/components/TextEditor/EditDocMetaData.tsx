@@ -21,12 +21,12 @@ import {
 import { styled } from '@mui/material/styles'
 import { useTranslation } from "react-i18next"
 
-import { useAuthContext } from "./AuthStore"
-import API, { authHelper, isUserInterface } from '../api'
-import { UserInterface } from "../types";
+import { useAuthContext } from "../AuthStore"
+import API, { authHelper, isUserInterface } from '../../api'
+import { UserInterface } from "../../types";
 import { AlertColor } from '@mui/material/Alert'
-import { MobileBox, NonMobileBox } from './MobileBox'
-import { otherColors as oColors, otherColors } from "../theme"
+import { MobileBox, NonMobileBox } from '../MobileBox'
+import { otherColors as oColors, otherColors } from "../../theme"
 
 export interface PlayerInterface {
   id: number; // When dealing with a User
