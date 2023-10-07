@@ -1,29 +1,19 @@
 import { useActive, useCommands } from "@remirror/react";
-import { otherColors } from "../../../theme";
+import HighlightIcon from '@mui/icons-material/Highlight'
+import MenuButton from "./MenuButton";
 
 const HighlightButton = () => {
   const { setTextHighlight } = useCommands();
   const active = useActive();
   
-
   return (
-    <button
+    <MenuButton
+      variant="outlined"
       onMouseDown={(event) => event.preventDefault()}
-      onClick={()=> {
-        setTextHighlight('yellow')
-      }}
-      style={{ 
-        marginTop: "4px",
-        marginLeft: "1px",
-        marginRight: "1px",
-        width: "25px",
-        height: "22px",
-        fontWeight: active.bold() ? 'bold' : undefined,
-        background: 'yellow',
-      }}
+      onClick={()=> { setTextHighlight('yellow') }}
     >
-      H
-    </button>
+      <HighlightIcon />
+    </MenuButton>
   );
 }
 

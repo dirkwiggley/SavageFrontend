@@ -18,7 +18,10 @@ const extensions = () => [
   
 const EditorContainer = styled.div`
   & > div.remirror-editor-wrapper {
-    // width: 650px;
+    & > div.ProseMirror.remirror-editor {
+      height: 300px;
+      overflow-y: auto;
+    }
 }`
 
 const DocEditor = () => {
@@ -42,10 +45,14 @@ const DocEditor = () => {
     setState(parameter.state)
   }
 
-  const myCallback = () => {
+  const saveDoc = () => {
     const html = prosemirrorNodeToHtml(state.doc)
     let wnd = window.open("about:blank", "", "_blank")
     wnd?.document.write(html)
+  }
+
+  const openMetaMenu = () => {
+
   }
 
   // Add the state and create an `onChange` handler for the state.
@@ -54,23 +61,16 @@ const DocEditor = () => {
       <Grid item xs={1}></Grid>
       <Grid item xs={10}>
         <Box className='remirror-theme'>
-        {/* <AllStyledComponent> */}
-        {/* <EditorContainer> */}
-          <Remirror
-            autoRender={'start'}
-            manager={manager}
-            state={state}
-            onChange={(parameter) => onChange(parameter)}
-            
-            // onChange={(parameter) => {
-            //   // Update the state to the latest value.
-            //   setState(parameter.state);
-            // }}
-          >
-            <Menu save={myCallback} />
-          </Remirror>
-        {/* </EditorContainer> */}
-        {/* </AllStyledComponent> */}
+          <EditorContainer>
+            <Remirror
+              autoRender={'start'}
+              manager={manager}
+              state={state}
+              onChange={(parameter) => onChange(parameter)}
+            >
+              <Menu save={saveDoc} meta={openMetaMenu} />
+            </Remirror>
+          </EditorContainer>
         </Box>
       </Grid>
       <Grid item xs={1}></Grid>

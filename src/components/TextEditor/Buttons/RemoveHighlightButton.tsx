@@ -1,29 +1,19 @@
 import { useActive, useCommands } from "@remirror/react";
-import { otherColors } from "../../../theme";
+import HighlightOffIcon from '@mui/icons-material/HighlightOffRounded'
+import MenuButton from "./MenuButton";
 
 const RemoveHighlightButton = () => {
   const { removeTextHighlight } = useCommands();
   const active = useActive();
 
   return (
-    <button
+    <MenuButton
+      variant="outlined"
       onMouseDown={(event) => event.preventDefault()}
-      onClick={()=> {
-        removeTextHighlight()
-      }}
-      style={{ 
-        marginTop: "4px",
-        marginLeft: "1px",
-        marginRight: "1px",
-        width: "25px",
-        height: "22px",
-        textDecoration: "line-through",
-        fontWeight: active.bold() ? 'bold' : undefined,
-        background: active.bold() ? otherColors.primaryMainTransparent : otherColors.transparent,
-      }}
+      onClick={()=> { removeTextHighlight() }}
     >
-      H
-    </button>
+      <HighlightOffIcon />
+    </MenuButton>
   );
 }
 
